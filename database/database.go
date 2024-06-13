@@ -1,17 +1,14 @@
 package database
 
-import "github.com/Jahn16/habitshare/models"
+import (
+	"github.com/Jahn16/habitshare/models"
+	"gorm.io/driver/sqlite"
+	"gorm.io/gorm"
+)
 
-var db []*models.Habit
+func Setup() (*gorm.DB, error) {
+	db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
 
-func Setup() {
-	db = make([]*models.Habit, 0)
-}
-
-func Insert(habit *models.Habit) {
-	db = append(db, habit)
-}
-
-func List() []*models.Habit {
-	return db
+	db.AutoMigrate(&models.Habit{})
+	return db, err
 }
