@@ -1,11 +1,17 @@
 package main
 
-import "github.com/gofiber/fiber/v2"
+import (
+	"log"
+
+	"github.com/Jahn16/habitshare/handlers"
+	"github.com/gofiber/fiber/v2"
+)
 
 func main() {
 	app := fiber.New()
-	app.Get("/", func(c *fiber.Ctx) error {
-		return c.SendString("Hello, World!")
-	})
-	app.Listen(":8000")
+
+	app.Get("/habits", handlers.HabitList)
+	app.Post("/habits", handlers.HabitCreate)
+
+	log.Fatal(app.Listen(":8000"))
 }
