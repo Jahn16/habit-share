@@ -14,7 +14,9 @@ func main() {
 	db, _ := database.Setup()
 
 	app.Get("/habits", handlers.HabitList(db))
+	app.Get("/habits/:id", handlers.HabitGet(db))
 	app.Post("/habits", handlers.HabitCreate(db))
+	app.Post("/habits/:id/record", handlers.RecordHabit(db))
 
 	log.Fatal(app.Listen(":8000"))
 }
