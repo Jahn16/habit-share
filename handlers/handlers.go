@@ -31,3 +31,14 @@ func HabitCreate(db *gorm.DB) fiber.Handler {
 		})
 	}
 }
+
+func HabitGet(db *gorm.DB) fiber.Handler {
+	return func(c *fiber.Ctx) error {
+		var habit models.Habit
+		db.First(&habit, c.Params("id"))
+		return c.JSON(fiber.Map{
+			"success": true,
+			"value":   habit,
+		})
+	}
+}
