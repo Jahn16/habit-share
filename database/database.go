@@ -9,6 +9,6 @@ import (
 func Setup() (*gorm.DB, error) {
 	db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
 
-	db.AutoMigrate(&models.Habit{})
+	db.AutoMigrate(&models.Habit{}, &models.HabitRecord{})
 	return db, err
 }
