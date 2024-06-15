@@ -9,7 +9,7 @@ import (
 func HabitList(db *gorm.DB) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		var habits []models.Habit
-		db.Find(&habits)
+		db.Preload("Records").Find(&habits)
 		return c.JSON(fiber.Map{
 			"success": true,
 			"value":   habits,
@@ -35,10 +35,29 @@ func HabitCreate(db *gorm.DB) fiber.Handler {
 func HabitGet(db *gorm.DB) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		var habit models.Habit
-		db.First(&habit, c.Params("id"))
+		db.Preload("Records").First(&habit, c.Params("id"))
 		return c.JSON(fiber.Map{
 			"success": true,
 			"value":   habit,
+		})
+	}
+}
+
+func RecordHabit(db *gorm.DB) fiber.Handler {
+	return func(c *fiber.Ctx) error {
+		habitRecord := new(models.HabitRecord)
+		if err := c.BodyParser(habitRecord); err != nil {
+			return err
+		}
+		habitID, err := c.ParamsInt("id")
+		if err != nil {
+			return err
+		}
+		habitRecord.HabitID = uint(habitID)
+		db.Create(&habitRecord)
+		return c.JSON(fiber.Map{
+			"sucess": true,
+			"value":  habitRecord,
 		})
 	}
 }
