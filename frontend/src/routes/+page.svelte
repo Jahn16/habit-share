@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Habit, HabitRecord } from '../models.ts';
+	import Record from '../components/record.svelte';
 	export let data: { habits: Habit[] };
 	let dayNumbers = Array.from({ length: 30 }, (_, i) => i + 1);
 	let dates = dayNumbers.map((day) => `2024-06-${day}T00:00:00Z`);
@@ -12,11 +13,11 @@
 </script>
 
 <ul>
-	{#each dates as date}
-		{#each data.habits as habit}
-			{#if habitRecorded(habit, date)}
-				<li>{date}: {habit.name}</li>
-			{/if}
+	{#each data.habits as habit}
+		<span>{habit.name}:</span>
+		{#each dates as date}
+			<Record done={habitRecorded(habit, date)} />
 		{/each}
+		<br />
 	{/each}
 </ul>
