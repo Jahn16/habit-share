@@ -27,6 +27,8 @@ func main() {
 
 	app.Get("/users", handlers.UserList(db))
 	app.Post("/users", authMiddleware, handlers.UserCreate(db))
+
+	app.Get("/users/me", authMiddleware, handlers.GetAuthenticatedUser(db))
 	app.Get("/users/:id", handlers.UserGet(db))
 
 	log.Fatal(app.Listen(":8000"))

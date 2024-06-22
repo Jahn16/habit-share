@@ -6,6 +6,18 @@ import (
 	"gorm.io/gorm"
 )
 
+func GetAuthenticatedUser(db *gorm.DB) fiber.Handler {
+	return func(c *fiber.Ctx) error {
+		email := c.Locals("email").(string)
+		var user models.User
+		db.Where(&models.User{Email: email}).Preload("Habits").First(&user)
+		return c.JSON(fiber.Map{
+			"success": true,
+			"value":   user,
+		})
+	}
+}
+
 func UserCreate(db *gorm.DB) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		username := c.Locals("username").(string)
