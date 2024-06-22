@@ -18,5 +18,9 @@ func main() {
 	app.Post("/habits", handlers.HabitCreate(db))
 	app.Post("/habits/:id/record", handlers.RecordHabit(db))
 
+	app.Get("/users", handlers.UserList(db))
+	app.Post("/users", handlers.UserCreate(db))
+	app.Get("/users/:id", handlers.UserGet(db))
+
 	log.Fatal(app.Listen(":8000"))
 }

@@ -6,6 +6,44 @@ import (
 	"gorm.io/gorm"
 )
 
+func UserCreate(db *gorm.DB) fiber.Handler {
+	return func(c *fiber.Ctx) error {
+		user := new(models.User)
+		if err := c.BodyParser(user); err != nil {
+			return err
+		}
+		db.Create(&user)
+		return c.JSON(fiber.Map{
+			"sucess": true,
+			"value":  user,
+		})
+
+	}
+}
+
+func UserGet(db *gorm.DB) fiber.Handler {
+	return func(c *fiber.Ctx) error {
+		var user models.User
+		db.Preload("Habits").First(&user, c.Params("id"))
+		return c.JSON(fiber.Map{
+			"success": true,
+			"value":   user,
+		})
+	}
+}
+
+func UserList(db *gorm.DB) fiber.Handler {
+	return func(c *fiber.Ctx) error {
+		var users []models.User
+		db.Find(&users)
+		return c.JSON(fiber.Map{
+			"success": true,
+			"value":   users,
+		})
+
+	}
+}
+
 func HabitList(db *gorm.DB) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		var habits []models.Habit
