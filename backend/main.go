@@ -22,11 +22,10 @@ func main() {
 
 	app.Get("/habits", handlers.HabitList(db))
 	app.Get("/habits/:id", handlers.HabitGet(db))
-	app.Post("/habits", handlers.HabitCreate(db))
-	app.Post("/habits/:id/record", handlers.RecordHabit(db))
+	app.Post("/habits", authMiddleware, handlers.HabitCreate(db))
+	app.Post("/habits/:id/record", authMiddleware, handlers.RecordHabit(db))
 
 	app.Get("/users", handlers.UserList(db))
-
 	app.Post("/users", authMiddleware, handlers.UserCreate(db))
 	app.Get("/users/:id", handlers.UserGet(db))
 

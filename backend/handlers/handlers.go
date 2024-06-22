@@ -62,10 +62,18 @@ func HabitList(db *gorm.DB) fiber.Handler {
 
 func HabitCreate(db *gorm.DB) fiber.Handler {
 	return func(c *fiber.Ctx) error {
+		email := c.Locals("email").(string)
+		var user models.User
+		result := db.Where(&models.User{Email: email}).First(&user)
+		if result.Error != nil {
+			return result.Error
+		}
+
 		habit := new(models.Habit)
 		if err := c.BodyParser(habit); err != nil {
 			return err
 		}
+		habit.UserID = user.ID
 		db.Create(&habit)
 		return c.JSON(fiber.Map{
 			"sucess": true,
@@ -91,11 +99,16 @@ func RecordHabit(db *gorm.DB) fiber.Handler {
 		if err := c.BodyParser(habitRecord); err != nil {
 			return err
 		}
-		habitID, err := c.ParamsInt("id")
-		if err != nil {
-			return err
+		email := c.Locals("email").(string)
+		var user models.User
+		db.Where(&models.User{Email: email}).First(&user)
+		var habit models.Habit
+		habitID := c.Params("id")
+		result := db.Where(&models.Habit{UserID: user.ID}).First(&habit, habitID)
+		if result.Error != nil {
+			return result.Error
 		}
-		habitRecord.HabitID = uint(habitID)
+		habitRecord.HabitID = habit.ID
 		db.Create(&habitRecord)
 		return c.JSON(fiber.Map{
 			"sucess": true,
