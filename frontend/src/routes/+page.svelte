@@ -2,9 +2,9 @@
 	import { signIn } from '@auth/sveltekit/client';
 	import { page } from '$app/stores';
 	import { Container, Table } from '@sveltestrap/sveltestrap';
-	import type { Habit, HabitRecord } from '../models.ts';
+	import type { Habit, HabitRecord, User } from '../models.ts';
 	import Record from '../components/record.svelte';
-	export let data: { habits: Habit[] };
+	export let data: { user: User };
 	let dayNumbers = Array.from({ length: 30 }, (_, i) => i + 1);
 	let dates = dayNumbers.map((day) => `2024-06-${day}T00:00:00Z`);
 	const habitRecorded = (habit: Habit, day: string): boolean => {
@@ -36,7 +36,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			{#each data.habits as habit}
+			{#each data.user.habits as habit}
 				<tr>
 					<th scope="row">{habit.name}</th>
 					{#each dates as date}
