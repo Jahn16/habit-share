@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { signIn } from '@auth/sveltekit/client';
 	import { page } from '$app/stores';
+	import { Container, Table } from '@sveltestrap/sveltestrap';
 	import type { Habit, HabitRecord } from '../models.ts';
 	import Record from '../components/record.svelte';
 	export let data: { habits: Habit[] };
@@ -23,12 +24,28 @@
 		alt="User Avatar"
 	/>
 </nav>
-<ul>
-	{#each data.habits as habit}
-		<span>{habit.name}:</span>
-		{#each dates as date}
-			<Record done={habitRecorded(habit, date)} />
-		{/each}
-		<br />
-	{/each}
-</ul>
+
+<Container>
+	<Table>
+		<thead>
+			<tr>
+				<th scope="col">#</th>
+				{#each dates as _, i}
+					<th scope="col">{i + 1}</th>
+				{/each}
+			</tr>
+		</thead>
+		<tbody>
+			{#each data.habits as habit}
+				<tr>
+					<th scope="row">{habit.name}</th>
+					{#each dates as date}
+						<td>
+							<Record done={habitRecorded(habit, date)} />
+						</td>
+					{/each}
+				</tr>
+			{/each}
+		</tbody>
+	</Table>
+</Container>
