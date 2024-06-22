@@ -8,9 +8,13 @@ import (
 
 func UserCreate(db *gorm.DB) fiber.Handler {
 	return func(c *fiber.Ctx) error {
-		user := new(models.User)
-		if err := c.BodyParser(user); err != nil {
-			return err
+		username := c.Locals("username").(string)
+		email := c.Locals("email").(string)
+		picture := c.Locals("picture").(string)
+		user := models.User{
+			Name:    username,
+			Email:   email,
+			Picture: picture,
 		}
 		db.Create(&user)
 		return c.JSON(fiber.Map{
