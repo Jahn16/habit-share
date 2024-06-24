@@ -1,31 +1,10 @@
-import type { User } from '../models';
+import { SocialHabitsClient } from '$lib/server/socialhabits';
+import type { PageServerLoad } from './$types';
 
-export function load(): { user: User } {
+export const load: PageServerLoad = async () => {
+	const client = new SocialHabitsClient();
+	const user = await client.getUser(1);
 	return {
-		user: {
-			name: 'Jahn',
-			picture:
-				'https://lh3.googleusercontent.com/a/ACg8ocLtJIkiH-j_IKsapo82ne7mJUax1sifro8gTCrz38jW4OKCVV93=s96-c',
-			habits: [
-				{
-					name: 'Beber aqua',
-					goal: 7,
-					records: [
-						{ date: '2024-06-17T00:00:00Z' },
-						{ date: '2024-06-15T00:00:00Z' },
-						{ date: '2024-06-14T00:00:00Z' }
-					]
-				},
-				{
-					name: 'Malhar',
-					goal: 4,
-					records: [
-						{ date: '2024-06-15T00:00:00Z' },
-						{ date: '2024-06-14T00:00:00Z' },
-						{ date: '2024-06-13T00:00:00Z' }
-					]
-				}
-			]
-		}
+		user: user
 	};
-}
+};

@@ -6,10 +6,10 @@
 	import Record from '../components/record.svelte';
 	export let data: { user: User };
 	let dayNumbers = Array.from({ length: 30 }, (_, i) => i + 1);
-	let dates = dayNumbers.map((day) => `2024-06-${day}T00:00:00Z`);
+	let dates = dayNumbers.map((day) => (day > 9 ? `2024-06-${day}` : `2024-06-0${day}`));
 	const habitRecorded = (habit: Habit, day: string): boolean => {
 		const habitRecordedInThatDay = (record: HabitRecord): boolean => {
-			return record.date === day;
+			return record.date.startsWith(day);
 		};
 		return habit.records.some(habitRecordedInThatDay);
 	};
