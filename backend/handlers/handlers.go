@@ -10,7 +10,7 @@ func GetAuthenticatedUser(db *gorm.DB) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		email := c.Locals("email").(string)
 		var user models.User
-		db.Where(&models.User{Email: email}).Preload("Habits").First(&user)
+		db.Where(&models.User{Email: email}).Preload("Habits.Records").First(&user)
 		return c.JSON(fiber.Map{
 			"success": true,
 			"value":   user,
@@ -40,7 +40,7 @@ func UserCreate(db *gorm.DB) fiber.Handler {
 func UserGet(db *gorm.DB) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		var user models.User
-		db.Preload("Habits").First(&user, c.Params("id"))
+		db.Preload("Habits.Records").First(&user, c.Params("id"))
 		return c.JSON(fiber.Map{
 			"success": true,
 			"value":   user,
