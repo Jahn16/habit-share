@@ -2,8 +2,8 @@
 	import { signIn } from '@auth/sveltekit/client';
 	import { page } from '$app/stores';
 	import { Container, Table } from '@sveltestrap/sveltestrap';
-	import type { Habit, HabitRecord, User } from '../models.ts';
-	import Record from '../components/record.svelte';
+	import type { Habit, HabitRecord, User } from '../../../models';
+	import Record from '../../../components/record.svelte';
 	export let data: { user: User };
 	let dayNumbers = Array.from({ length: 30 }, (_, i) => i + 1);
 	let dates = dayNumbers.map((day) => (day > 9 ? `2024-06-${day}` : `2024-06-0${day}`));
