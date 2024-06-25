@@ -8,6 +8,9 @@ export class SocialHabitsClient {
 	async getUser(id: number): Promise<User> {
 		const url = `${this.url}/users/${id}`;
 		const response = await fetch(url);
+		if (!response.ok) {
+			throw Error(`User ${id} not found`);
+		}
 		const result = await response.json();
 		return result['value'];
 	}
