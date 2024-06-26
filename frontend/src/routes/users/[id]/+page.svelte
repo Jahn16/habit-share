@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { signIn } from '@auth/sveltekit/client';
 	import { page } from '$app/stores';
-	import { Container, Table } from '@sveltestrap/sveltestrap';
+	import { Button, Col, Container, Form, Input, Row, Table } from '@sveltestrap/sveltestrap';
 	import type { Habit, HabitRecord, User } from '../../../models';
 	import Record from '../../../components/record.svelte';
 	export let data: { user: User };
@@ -48,4 +48,23 @@
 			{/each}
 		</tbody>
 	</Table>
+	<Container>
+		<Form method="post" action="?/add">
+			<Row>
+				<Col>
+					<Input type="text" placeholder="Habit Name" name="name" />
+				</Col>
+				<Col>
+					<Input type="select">
+						{#each [1, 2, 3, 4, 5, 6, 7] as option}
+							<option>{option}</option>
+						{/each}
+					</Input>
+				</Col>
+				<Col>
+					<Button color="primary" children="Add" />
+				</Col>
+			</Row>
+		</Form>
+	</Container>
 </Container>
