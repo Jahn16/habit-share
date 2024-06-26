@@ -23,8 +23,6 @@ export class SocialHabitsClient {
 			body: JSON.stringify(habit)
 		});
 		if (!response.ok) {
-			console.log(await response.text());
-			return;
 			throw Error(`Could not create habit ${habit.name}`);
 		}
 		const result = await response.json();
