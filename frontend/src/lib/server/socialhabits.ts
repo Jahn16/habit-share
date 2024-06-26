@@ -1,4 +1,4 @@
-import type { User } from '../../models';
+import type { User, Habit } from '../../models';
 export class SocialHabitsClient {
 	private url: string;
 	constructor() {
@@ -10,6 +10,22 @@ export class SocialHabitsClient {
 		const response = await fetch(url);
 		if (!response.ok) {
 			throw Error(`User ${id} not found`);
+		}
+		const result = await response.json();
+		return result['value'];
+	}
+
+	async addHabit(habit: Habit, accessToken: string) {
+		const url = `${this.url}/habits`;
+		const response = await fetch(url, {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${accessToken}` },
+			body: JSON.stringify(habit)
+		});
+		if (!response.ok) {
+			console.log(await response.text());
+			return;
+			throw Error(`Could not create habit ${habit.name}`);
 		}
 		const result = await response.json();
 		return result['value'];
