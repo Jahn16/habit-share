@@ -131,3 +131,28 @@ func RecordHabit(db *gorm.DB) fiber.Handler {
 		})
 	}
 }
+
+func DeleteRecord(db *gorm.DB) fiber.Handler {
+	return func(c *fiber.Ctx) error {
+		recordID := c.Params("id")
+		var record models.HabitRecord
+		recordResult := db.First(&record, recordID)
+		if recordResult.Error != nil {
+			return recordResult.Error
+		}
+
+		email := c.Locals("email").(string)
+		var user models.User
+		db.Where(&models.User{Email: email}).First(&user)
+		var habit models.Habit
+		habitResult := db.Where(&models.Habit{UserID: user.ID}).First(&habit, record.HabitID)
+		if habitResult.Error != nil {
+			return habitResult.Error
+		}
+		db.Delete(&record)
+		return c.JSON(fiber.Map{
+			"sucess": true,
+			"value":  record,
+		})
+	}
+}
