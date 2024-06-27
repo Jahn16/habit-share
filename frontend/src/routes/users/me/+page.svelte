@@ -7,11 +7,8 @@
 	export let data: { user: User };
 	let dayNumbers = Array.from({ length: 30 }, (_, i) => i + 1);
 	let dates = dayNumbers.map((day) => `2024-06-${day > 9 ? day : '0' + day}T00:00:00Z`);
-	const habitRecorded = (habit: Habit, day: string): boolean => {
-		const habitRecordedInThatDay = (record: HabitRecord): boolean => {
-			return record.date.startsWith(day);
-		};
-		return habit.records.some(habitRecordedInThatDay);
+	const getRecord = (habit: Habit, day: string): HabitRecord | undefined => {
+		return habit.records.find((r) => r.date.startsWith(day));
 	};
 </script>
 
@@ -41,7 +38,7 @@
 					<th scope="row">{habit.name}</th>
 					{#each dates as date}
 						<td>
-							<Record done={habitRecorded(habit, date)} habitId={habit.ID} {date} />
+							<Record record={getRecord(habit, date)} habitId={habit.ID ? habit.ID : -1} {date} />
 						</td>
 					{/each}
 				</tr>
