@@ -32,5 +32,17 @@ export const actions: Actions = {
 			{ name: habitName, goal: parseInt(habitGoal), records: [] },
 			session.accessToken
 		);
+	},
+	record: async ({ request, locals }) => {
+		const session = await locals.auth();
+		if (!session) {
+			return;
+		}
+
+		const data = await request.formData();
+		const habitId = data.get('habit-id') as string;
+		const date = data.get('date') as string;
+		const client = new SocialHabitsClient();
+		client.recordHabit({ habitID: parseInt(habitId), date: date }, session.accessToken);
 	}
 };
