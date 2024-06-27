@@ -1,12 +1,17 @@
 import { error, type Actions } from '@sveltejs/kit';
 import { SocialHabitsClient } from '$lib/server/socialhabits';
 import type { PageServerLoad } from './$types';
+import type { User } from '@auth/sveltekit';
 
-export const load: PageServerLoad = async ({ params }) => {
+export const load: PageServerLoad = async ({ locals }) => {
+	const session = await locals.auth();
+	if (!session) {
+		return;
+	}
 	const client = new SocialHabitsClient();
-	let user;
+	let user: User;
 	try {
-		user = await client.getUser(parseInt(params.id));
+		user = await client.getMe(session.accessToken);
 	} catch (e: unknown) {
 		if (e instanceof Error) {
 			error(404, { message: e.message });
