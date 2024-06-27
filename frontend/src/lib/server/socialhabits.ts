@@ -15,6 +15,16 @@ export class SocialHabitsClient {
 		return result['value'];
 	}
 
+	async getMe(accessToken: string): Promise<User> {
+		const url = `${this.url}/users/me`;
+		const response = await fetch(url, { headers: { Authorization: `Bearer ${accessToken}` } });
+		if (!response.ok) {
+			throw Error('Could not get User');
+		}
+		const result = await response.json();
+		return result['value'];
+	}
+
 	async addHabit(habit: Habit, accessToken: string) {
 		const url = `${this.url}/habits`;
 		const response = await fetch(url, {
