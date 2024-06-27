@@ -40,7 +40,10 @@ func UserCreate(db *gorm.DB) fiber.Handler {
 func UserGet(db *gorm.DB) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		var user models.User
-		db.Preload("Habits.Records").First(&user, c.Params("id"))
+		result := db.Preload("Habits.Records").First(&user, c.Params("id"))
+		if result.Error != nil {
+			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"sucess": "false", "message": "User not found"})
+		}
 		return c.JSON(fiber.Map{
 			"success": true,
 			"value":   user,
