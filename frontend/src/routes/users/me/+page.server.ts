@@ -49,5 +49,16 @@ export const actions: Actions = {
 		const date = data.get('date') as string;
 		const client = new SocialHabitsClient();
 		client.recordHabit({ habitID: parseInt(habitId), date: date }, session.accessToken);
+	},
+	undo: async ({ request, locals }) => {
+		const session = await locals.auth();
+		if (!session) {
+			return;
+		}
+
+		const data = await request.formData();
+		const recordID = data.get('record-id') as string;
+		const client = new SocialHabitsClient();
+		client.deleteRecord(parseInt(recordID), session.accessToken);
 	}
 };
