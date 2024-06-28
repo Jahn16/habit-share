@@ -53,4 +53,17 @@ export class SocialHabitsClient {
 		const result = await response.json();
 		return result['value'];
 	}
+
+	async deleteRecord(ID: number, accessToken: string) {
+		const url = `${this.url}/records/${ID}`;
+		const response = await fetch(url, {
+			method: 'DELETE',
+			headers: { Authorization: `Bearer ${accessToken}` }
+		});
+		if (!response.ok) {
+			throw Error(`Could not delete record ${ID}`);
+		}
+		const result = await response.json();
+		return result['value'];
+	}
 }
