@@ -15,13 +15,6 @@
 <div>
 	<button on:click={signIn} />
 </div>
-<nav>
-	<img
-		src={$page.data.session?.user?.image ?? 'https://source.boringavatars.com/marble/120/'}
-		alt="User Avatar"
-	/>
-</nav>
-
 <Container>
 	<Table>
 		<thead>
