@@ -1,4 +1,5 @@
 export interface HabitRecord {
+	ID?: number;
 	habitID: number;
 	date: string;
 }
