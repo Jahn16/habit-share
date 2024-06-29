@@ -62,7 +62,7 @@ export const actions: Actions = {
 		const client = new SocialHabitsClient();
 		const habitName = data.get('name') as string;
 		const habitGoal = data.get('goal') as string;
-		client.addHabit(
+		await client.addHabit(
 			{ name: habitName, goal: parseInt(habitGoal), records: [] },
 			session.accessToken
 		);
@@ -77,7 +77,7 @@ export const actions: Actions = {
 		const habitId = data.get('habit-id') as string;
 		const date = data.get('date') as string;
 		const client = new SocialHabitsClient();
-		client.recordHabit({ habitID: parseInt(habitId), date: date }, session.accessToken);
+		await client.recordHabit({ habitID: parseInt(habitId), date: date }, session.accessToken);
 	},
 	undo: async ({ request, locals }) => {
 		const session = await locals.auth();
@@ -88,6 +88,6 @@ export const actions: Actions = {
 		const data = await request.formData();
 		const recordID = data.get('record-id') as string;
 		const client = new SocialHabitsClient();
-		client.deleteRecord(parseInt(recordID), session.accessToken);
+		await client.deleteRecord(parseInt(recordID), session.accessToken);
 	}
 };
