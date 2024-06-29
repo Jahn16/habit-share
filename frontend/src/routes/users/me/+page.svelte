@@ -48,17 +48,21 @@
 			<Form method="post" action="?/add">
 				<Row>
 					<Col>
-						<Input type="text" placeholder="Habit Name" name="name" />
+						<FormGroup floating label="Habit Name" class="py-0" row={true}>
+							<Input name="name" />
+						</FormGroup>
 					</Col>
 					<Col>
-						<Input type="select">
-							{#each [1, 2, 3, 4, 5, 6, 7] as option}
-								<option>{option}</option>
-							{/each}
-						</Input>
+						<FormGroup floating label="Weekly Goal">
+							<Input type="select">
+								{#each [1, 2, 3, 4, 5, 6, 7] as option}
+									<option>{option}</option>
+								{/each}
+							</Input>
+						</FormGroup>
 					</Col>
 					<Col>
-						<Button color="primary" children="Add" />
+						<Button color="primary" children="Add" size="lg" />
 					</Col>
 				</Row>
 			</Form>
