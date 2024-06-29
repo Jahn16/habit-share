@@ -10,7 +10,10 @@ func GetAuthenticatedUser(db *gorm.DB) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		email := c.Locals("email").(string)
 		var user models.User
-		db.Where(&models.User{Email: email}).Preload("Habits.Records").First(&user)
+		result := db.Where(&models.User{Email: email}).Preload("Habits.Records").First(&user)
+		if result.Error != nil {
+			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"sucess": "false", "message": "User not found"})
+		}
 		return c.JSON(fiber.Map{
 			"success": true,
 			"value":   user,
