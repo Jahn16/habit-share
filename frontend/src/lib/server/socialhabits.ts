@@ -20,11 +20,23 @@ export class SocialHabitsClient {
 		const url = `${this.url}/users/me`;
 		const response = await fetch(url, { headers: { Authorization: `Bearer ${accessToken}` } });
 		if (!response.ok) {
-			console.log(response.status);
 			if (response.status == 404) {
 				throw new UserNotFoundError();
 			}
 			throw Error('Could not get User');
+		}
+		const result = await response.json();
+		return result['value'];
+	}
+
+	async createUser(accessToken: string): Promise<User> {
+		const url = `${this.url}/users`;
+		const response = await fetch(url, {
+			method: 'POST',
+			headers: { Authorization: `Bearer ${accessToken}` }
+		});
+		if (!response.ok) {
+			throw Error('Could create user');
 		}
 		const result = await response.json();
 		return result['value'];
