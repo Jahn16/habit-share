@@ -2,19 +2,24 @@ import { error, type Actions } from '@sveltejs/kit';
 import { SocialHabitsClient } from '$lib/server/socialhabits';
 import type { PageServerLoad } from './$types';
 import type { User } from '@auth/sveltekit';
+import { UserNotFoundError } from '$lib/errors/UserNotFoundError';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const session = await locals.auth();
 	if (!session) {
-		return;
+		error(403, { message: 'You must be authenticated to access this page' });
 	}
+
 	const client = new SocialHabitsClient();
 	let user: User;
 	try {
 		user = await client.getMe(session.accessToken);
 	} catch (e: unknown) {
-		if (e instanceof Error) {
+		if (e instanceof UserNotFoundError) {
 			error(404, { message: e.message });
+		}
+		if (e instanceof Error) {
+			error(500, { message: e.message });
 		}
 		error(500);
 	}
