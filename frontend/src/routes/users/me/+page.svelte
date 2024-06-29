@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { signIn } from '@auth/sveltekit/client';
-	import { page } from '$app/stores';
 	import { Button, Col, Container, Form, Input, Row, Table } from '@sveltestrap/sveltestrap';
 	import type { Habit, HabitRecord, User } from '../../../models';
 	import Record from '../../../components/record.svelte';
@@ -12,9 +11,6 @@
 	};
 </script>
 
-<div>
-	<button on:click={signIn} />
-</div>
 <Container>
 	<Table>
 		<thead>
