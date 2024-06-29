@@ -16,7 +16,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 		user = await client.getMe(session.accessToken);
 	} catch (e: unknown) {
 		if (e instanceof UserNotFoundError) {
-			error(404, { message: e.message });
+			return { user: null };
 		}
 		if (e instanceof Error) {
 			error(500, { message: e.message });
@@ -29,6 +29,30 @@ export const load: PageServerLoad = async ({ locals }) => {
 };
 
 export const actions: Actions = {
+	setup: async ({ request, locals }) => {
+		const session = await locals.auth();
+		if (!session) {
+			error(403);
+		}
+		const data = await request.formData();
+		const habitName = data.get('habit-name') as string;
+		const habitGoal = data.get('habit-goal') as string;
+
+		const client = new SocialHabitsClient();
+		await client
+			.getMe(session.accessToken)
+			.catch((e) => {
+				if (e instanceof UserNotFoundError) {
+					return client.createUser(session.accessToken);
+				}
+			})
+			.then(() => {
+				return client.addHabit(
+					{ name: habitName, goal: parseInt(habitGoal), records: [] },
+					session.accessToken
+				);
+			});
+	},
 	add: async ({ request, locals }) => {
 		const session = await locals.auth();
 		if (!session) {
