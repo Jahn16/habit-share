@@ -1,3 +1,4 @@
+import { UserNotFoundError } from '$lib/errors/UserNotFoundError';
 import type { User, Habit, HabitRecord } from '../../models';
 export class SocialHabitsClient {
 	private url: string;
@@ -9,7 +10,7 @@ export class SocialHabitsClient {
 		const url = `${this.url}/users/${id}`;
 		const response = await fetch(url);
 		if (!response.ok) {
-			throw Error(`User ${id} not found`);
+			throw new UserNotFoundError(id);
 		}
 		const result = await response.json();
 		return result['value'];
@@ -19,6 +20,10 @@ export class SocialHabitsClient {
 		const url = `${this.url}/users/me`;
 		const response = await fetch(url, { headers: { Authorization: `Bearer ${accessToken}` } });
 		if (!response.ok) {
+			console.log(response.status);
+			if (response.status == 404) {
+				throw new UserNotFoundError();
+			}
 			throw Error('Could not get User');
 		}
 		const result = await response.json();
