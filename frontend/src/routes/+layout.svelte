@@ -12,7 +12,7 @@
 	import { signIn } from '@auth/sveltekit/client';
 </script>
 
-<Navbar color="dark" theme="dark">
+<Navbar color="dark" theme="dark" class="mb-5">
 	<NavbarBrand href="/">Social Habits</NavbarBrand>
 	<Nav>
 		{#if !$page.data.session}
