@@ -6,6 +6,7 @@
 		Container,
 		Form,
 		FormGroup,
+		Icon,
 		Input,
 		Row,
 		Table
@@ -13,6 +14,7 @@
 	import type { Habit, HabitRecord, User } from '../../../models';
 	import Record from '../../../components/record.svelte';
 	export let data: { user?: User };
+	let addingHabit = false;
 	let dayNumbers = Array.from({ length: 30 }, (_, i) => i + 1);
 	let dates = dayNumbers.map((day) => `2024-06-${day > 9 ? day : '0' + day}T00:00:00Z`);
 	const getRecord = (habit: Habit, day: string): HabitRecord | undefined => {
@@ -45,27 +47,42 @@
 			</tbody>
 		</Table>
 		<Container>
-			<Form method="post" action="?/add">
-				<Row>
-					<Col>
-						<FormGroup floating label="Habit Name" class="py-0" row={true}>
-							<Input name="name" />
-						</FormGroup>
-					</Col>
-					<Col>
-						<FormGroup floating label="Weekly Goal">
-							<Input type="select">
-								{#each [1, 2, 3, 4, 5, 6, 7] as option}
-									<option>{option}</option>
-								{/each}
-							</Input>
-						</FormGroup>
-					</Col>
-					<Col>
-						<Button color="primary" children="Add" size="lg" />
-					</Col>
-				</Row>
-			</Form>
+			{#if addingHabit}
+				<Form method="post" action="?/add">
+					<Row>
+						<Col xs="auto"
+							><Button
+								type="button"
+								size="lg"
+								on:click={() => {
+									addingHabit = false;
+								}}><Icon name="x-square" /></Button
+							></Col
+						>
+						<Col>
+							<FormGroup floating label="Habit Name" class="py-0" row={true}>
+								<Input name="name" />
+							</FormGroup>
+						</Col>
+						<Col>
+							<FormGroup floating label="Weekly Goal">
+								<Input type="select">
+									{#each [1, 2, 3, 4, 5, 6, 7] as option}
+										<option>{option}</option>
+									{/each}
+								</Input>
+							</FormGroup>
+						</Col>
+						<Col>
+							<Button color="primary" size="lg"><Icon name="pencil-square" /></Button>
+						</Col>
+					</Row>
+				</Form>
+			{:else}
+				<Button color="primary" size="lg" on:click={() => (addingHabit = true)}
+					><Icon name="plus-square" /></Button
+				>
+			{/if}
 		</Container>
 	</Container>
 {:else}
