@@ -48,38 +48,33 @@
 		</Table>
 		<Container>
 			{#if addingHabit}
-				<Form method="post" action="?/add">
-					<Row>
-						<Col xs="auto"
-							><Button
-								type="button"
-								size="lg"
-								on:click={() => {
-									addingHabit = false;
-								}}><Icon name="x-square" /></Button
-							></Col
-						>
-						<Col>
-							<FormGroup floating label="Habit Name" class="py-0" row={true}>
-								<Input name="name" />
-							</FormGroup>
-						</Col>
-						<Col>
-							<FormGroup floating label="Weekly Goal">
-								<Input type="select">
-									{#each [1, 2, 3, 4, 5, 6, 7] as option}
-										<option>{option}</option>
-									{/each}
-								</Input>
-							</FormGroup>
-						</Col>
-						<Col>
-							<Button color="primary" size="lg"><Icon name="pencil-square" /></Button>
-						</Col>
-					</Row>
+				<Form method="post" action="?/add" class="row align-items-center">
+					<Col xs="auto"
+						><Button
+							type="button"
+							size="md"
+							on:click={() => {
+								addingHabit = false;
+							}}><Icon name="x-square" /></Button
+						></Col
+					>
+					<Col>
+						<Input name="name" placeholder="Habit Name" />
+					</Col>
+					<Col>
+						<Input type="select">
+							<option disabled selected>Weekly Goal</option>
+							{#each [1, 2, 3, 4, 5, 6, 7] as option}
+								<option>{option}</option>
+							{/each}
+						</Input>
+					</Col>
+					<Col>
+						<Button color="primary" size="md"><Icon name="pencil-square" /></Button>
+					</Col>
 				</Form>
 			{:else}
-				<Button color="primary" size="lg" on:click={() => (addingHabit = true)}
+				<Button color="primary" size="md" on:click={() => (addingHabit = true)}
 					><Icon name="plus-square" /></Button
 				>
 			{/if}
