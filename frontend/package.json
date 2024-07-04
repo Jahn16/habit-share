@@ -32,6 +32,7 @@
 	"type": "module",
 	"dependencies": {
 		"@auth/sveltekit": "^1.4.1",
-		"@sveltestrap/sveltestrap": "^6.2.7"
+		"@sveltestrap/sveltestrap": "^6.2.7",
+		"svelte-sound": "^0.6.0"
 	}
 }
