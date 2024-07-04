@@ -1,19 +1,33 @@
 <script lang="ts">
 	import type { HabitRecord } from '../models';
+	import { Sound } from 'svelte-sound';
+	import { enhance } from '$app/forms';
+
 	export let habitId: number;
 	export let date: string;
 	export let record: HabitRecord | undefined = undefined;
+	export let notificationSound: Sound;
 
 	let form: HTMLFormElement;
 	const submitForm = () => {
 		if (form) {
-			form.submit();
+			form.requestSubmit();
 		}
 	};
 </script>
 
 {#if !record}
-	<form method="post" action="?/record" bind:this={form}>
+	<form
+		method="post"
+		action="?/record"
+		bind:this={form}
+		use:enhance={() => {
+			notificationSound.play();
+			return async ({ update }) => {
+				update({ reset: false });
+			};
+		}}
+	>
 		<input type="hidden" value={habitId} name="habit-id" />
 		<input type="hidden" value={date} name="date" />
 		<input type="checkbox" on:change={submitForm} />
