@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { signIn } from '@auth/sveltekit/client';
 	import {
 		Button,
 		Col,
@@ -8,11 +7,17 @@
 		FormGroup,
 		Icon,
 		Input,
-		Row,
 		Table
 	} from '@sveltestrap/sveltestrap';
+
 	import type { Habit, HabitRecord, User } from '../../../models';
 	import Record from '../../../components/record.svelte';
+
+	import { Sound } from 'svelte-sound';
+	import notificationSoundSrc from '$lib/assets/ding.mp3';
+
+	const notificationSound = new Sound(notificationSoundSrc);
+
 	export let data: { user?: User };
 	let addingHabit = false;
 	let dayNumbers = Array.from({ length: 30 }, (_, i) => i + 1);
@@ -39,7 +44,12 @@
 						<th scope="row">{habit.name}</th>
 						{#each dates as date}
 							<td>
-								<Record record={getRecord(habit, date)} habitId={habit.ID ? habit.ID : -1} {date} />
+								<Record
+									record={getRecord(habit, date)}
+									habitId={habit.ID ? habit.ID : -1}
+									{date}
+									{notificationSound}
+								/>
 							</td>
 						{/each}
 					</tr>
