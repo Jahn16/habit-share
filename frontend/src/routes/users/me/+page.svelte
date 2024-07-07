@@ -80,7 +80,7 @@
 						</Input>
 					</Col>
 					<Col>
-						<Button color="primary" size="md"><Icon name="pencil-square" /></Button>
+						<Button color="primary" size="md"><Icon name="arrow-right-square" /></Button>
 					</Col>
 				</Form>
 			{:else}
