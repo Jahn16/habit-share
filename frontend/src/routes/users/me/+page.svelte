@@ -69,7 +69,7 @@
 						></Col
 					>
 					<Col>
-						<Input name="name" placeholder="Habit Name" />
+						<Input name="name" placeholder="Habit Name" required />
 					</Col>
 					<Col>
 						<Input type="select">
@@ -99,7 +99,7 @@
 		<Form method="post" action="?/setup">
 			<FormGroup>
 				<FormGroup floating label="Habit Name">
-					<Input name="habit-name" />
+					<Input name="habit-name" required />
 				</FormGroup>
 			</FormGroup>
 			<FormGroup floating label="Weekly Goal">
