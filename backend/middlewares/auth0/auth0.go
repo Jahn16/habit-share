@@ -36,7 +36,7 @@ func New(config Config) fiber.Handler {
 		if err != nil {
 			return c.Status(fiber.StatusUnauthorized).SendString(err.Error())
 		}
-		issuerURL, _ := url.Parse("https://" + config.Issuer + "/")
+		issuerURL, _ := url.Parse(config.Issuer + "/")
 		provider := jwks.NewCachingProvider(issuerURL, 5*time.Minute)
 
 		jwtValidator, err := validator.New(
