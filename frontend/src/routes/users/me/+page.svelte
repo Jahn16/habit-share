@@ -10,7 +10,7 @@
 		Table
 	} from '@sveltestrap/sveltestrap';
 
-	import type { Habit, HabitRecord, User } from '../../../models';
+	import type { Habit, HabitRecord, User, Quote } from '../../../models';
 	import Record from '../../../components/record.svelte';
 
 	import { Sound } from 'svelte-sound';
@@ -18,7 +18,7 @@
 
 	const notificationSound = new Sound(notificationSoundSrc);
 
-	export let data: { user?: User };
+	export let data: { user?: User; quote: Quote };
 	let addingHabit = false;
 	let dayNumbers = Array.from({ length: 30 }, (_, i) => i + 1);
 	let dates = dayNumbers.map((day) => `2024-06-${day > 9 ? day : '0' + day}T00:00:00Z`);
@@ -29,6 +29,17 @@
 
 {#if data.user}
 	<Container>
+		<Container>
+			<h3>Welcome back, {data.user.name}</h3>
+			<br />
+			<blockquote cite="https://www.huxley.net/bnw/four.html">
+				<p>
+					{data.quote.quote}
+				</p>
+				<footer>— <cite>{data.quote.source}</cite></footer>
+			</blockquote>
+		</Container>
+
 		<Table>
 			<thead>
 				<tr>
