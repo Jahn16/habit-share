@@ -17,7 +17,13 @@
 	<Nav>
 		{#if !$page.data.session}
 			<NavItem>
-				<Button children="Login" color="primary" on:click={signIn} />
+				<Button
+					children="Login"
+					color="primary"
+					on:click={() => {
+						signIn('auth0', { callbackUrl: '/users/me' });
+					}}
+				/>
 			</NavItem>
 		{:else}
 			<NavItem>
