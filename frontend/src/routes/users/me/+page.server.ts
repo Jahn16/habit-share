@@ -3,6 +3,7 @@ import { SocialHabitsClient } from '$lib/server/socialhabits';
 import type { PageServerLoad } from './$types';
 import type { User } from '@auth/sveltekit';
 import { UserNotFoundError } from '$lib/errors/UserNotFoundError';
+import quotes from '$lib/data/quotes.json';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const session = await locals.auth();
@@ -23,8 +24,11 @@ export const load: PageServerLoad = async ({ locals }) => {
 		}
 		error(500);
 	}
+
+	const quote = quotes[Math.floor(Math.random() * quotes.length)];
 	return {
-		user: user
+		user: user,
+		quote: quote
 	};
 };
 
