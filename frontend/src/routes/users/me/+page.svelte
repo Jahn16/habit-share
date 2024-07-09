@@ -1,17 +1,9 @@
 <script lang="ts">
-	import {
-		Button,
-		Col,
-		Container,
-		Form,
-		FormGroup,
-		Icon,
-		Input,
-		Table
-	} from '@sveltestrap/sveltestrap';
+	import { Button, Container, Form, FormGroup, Input, Table } from '@sveltestrap/sveltestrap';
 
 	import type { Habit, HabitRecord, User, Quote } from '../../../models';
 	import Record from '../../../components/record.svelte';
+	import AddHabit from '../../../components/addHabit.svelte';
 
 	import { Sound } from 'svelte-sound';
 	import notificationSoundSrc from '$lib/assets/ding.mp3';
@@ -19,7 +11,6 @@
 	const notificationSound = new Sound(notificationSoundSrc);
 
 	export let data: { user?: User; quote: Quote };
-	let addingHabit = false;
 	let dayNumbers = Array.from({ length: 30 }, (_, i) => i + 1);
 	let dates = dayNumbers.map((day) => `2024-06-${day > 9 ? day : '0' + day}T00:00:00Z`);
 	const getRecord = (habit: Habit, day: string): HabitRecord | undefined => {
@@ -67,39 +58,7 @@
 				{/each}
 			</tbody>
 		</Table>
-		<Container>
-			{#if addingHabit}
-				<Form method="post" action="?/add" class="row align-items-center">
-					<Col xs="auto"
-						><Button
-							type="button"
-							size="md"
-							on:click={() => {
-								addingHabit = false;
-							}}><Icon name="x-square" /></Button
-						></Col
-					>
-					<Col>
-						<Input name="name" placeholder="Habit Name" required />
-					</Col>
-					<Col>
-						<Input type="select">
-							<option disabled selected>Weekly Goal</option>
-							{#each [1, 2, 3, 4, 5, 6, 7] as option}
-								<option>{option}</option>
-							{/each}
-						</Input>
-					</Col>
-					<Col>
-						<Button color="primary" size="md"><Icon name="arrow-right-square" /></Button>
-					</Col>
-				</Form>
-			{:else}
-				<Button color="primary" size="md" on:click={() => (addingHabit = true)}
-					><Icon name="plus-square" /></Button
-				>
-			{/if}
-		</Container>
+		<AddHabit />
 	</Container>
 {:else}
 	<Container>
