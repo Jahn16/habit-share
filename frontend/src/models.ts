@@ -16,3 +16,8 @@ export interface User {
 	picture: string;
 	habits: Habit[];
 }
+
+export interface Quote {
+	quote: string;
+	source: string;
+}
