@@ -1,7 +1,8 @@
-{ pkgs ? import <nixpkgs> {} }:
-  pkgs.mkShell {
-    nativeBuildInputs = with pkgs; [
-     go
-     air
-   ];
+{ pkgs ? import <nixpkgs> { } }:
+pkgs.mkShell {
+  nativeBuildInputs = with pkgs; [
+    go
+    golangci-lint
+    air
+  ];
 }
