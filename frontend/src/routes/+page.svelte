@@ -18,4 +18,11 @@
 		the best. That's why this project is social at its core, you can share and talk about your
 		habits with your friends and family.
 	</p>
+	<br />
+	<h2>Getting started</h2>
+	<br />
+	<p>
+		To get started you just need to press the login button in the top right corner and you will be
+		redirected to your homepage. There you can create and track all your habits!
+	</p>
 </Container>
