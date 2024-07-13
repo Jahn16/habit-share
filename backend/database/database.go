@@ -1,7 +1,7 @@
 package database
 
 import (
-	"github.com/Jahn16/habitshare/models"
+	"github.com/Jahn16/socialhabits/models"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )

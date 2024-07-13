@@ -1,4 +1,4 @@
-module github.com/Jahn16/habitshare
+module github.com/Jahn16/socialhabits
 
 go 1.22.4
 
