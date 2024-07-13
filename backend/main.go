@@ -3,12 +3,12 @@ package main
 import (
 	"log"
 
-	"github.com/Jahn16/habitshare/database"
-	"github.com/Jahn16/habitshare/handlers"
+	"github.com/Jahn16/socialhabits/database"
+	"github.com/Jahn16/socialhabits/handlers"
 
 	"os"
 
-	"github.com/Jahn16/habitshare/middlewares/auth0"
+	"github.com/Jahn16/socialhabits/middlewares/auth0"
 	"github.com/gofiber/fiber/v2"
 
 	"github.com/joho/godotenv"

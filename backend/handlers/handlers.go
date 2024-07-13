@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"github.com/Jahn16/habitshare/models"
+	"github.com/Jahn16/socialhabits/models"
 	"github.com/gofiber/fiber/v2"
 	"gorm.io/gorm"
 )
