@@ -16,8 +16,9 @@ import (
 
 func main() {
 	app := fiber.New()
-	db, _ := database.Setup()
+
 	godotenv.Load()
+	db, _ := database.New(os.Getenv("DB_DSN"))
 	authMiddleware := auth0.New(auth0.Config{Issuer: os.Getenv("AUTH_AUTH0_ISSUER"), Audience: []string{os.Getenv("AUTH_AUTH0_ID")}})
 
 	app.Get("/habits", handlers.HabitList(db))

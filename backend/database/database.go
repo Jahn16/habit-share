@@ -2,12 +2,12 @@ package database
 
 import (
 	"github.com/Jahn16/socialhabits/models"
-	"gorm.io/driver/sqlite"
+	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
-func Setup() (*gorm.DB, error) {
-	db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
+func New(dsn string) (*gorm.DB, error) {
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 
 	db.AutoMigrate(&models.User{}, &models.Habit{}, &models.HabitRecord{})
 	return db, err
