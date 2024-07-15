@@ -11,8 +11,14 @@
 	const notificationSound = new Howl({ src: [notificationSoundSrc] });
 
 	export let data: { user?: User; quote: Quote };
-	let dayNumbers = Array.from({ length: 30 }, (_, i) => i + 1);
+
+	const daysInMonth = (): number => {
+		var now = new Date();
+		return new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+	};
+	let dayNumbers = Array.from({ length: daysInMonth() }, (_, i) => i + 1);
 	let dates = dayNumbers.map((day) => `2024-06-${day > 9 ? day : '0' + day}T00:00:00Z`);
+
 	const getRecord = (habit: Habit, day: string): HabitRecord | undefined => {
 		return habit.records.find((r) => r.date.startsWith(day));
 	};
