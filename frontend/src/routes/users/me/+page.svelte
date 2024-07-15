@@ -1,14 +1,14 @@
 <script lang="ts">
 	import { Button, Container, Form, FormGroup, Input, Table } from '@sveltestrap/sveltestrap';
+	import { Howl, Howler } from 'howler';
 
 	import type { Habit, HabitRecord, User, Quote } from '../../../models';
 	import Record from '../../../components/record.svelte';
 	import AddHabit from '../../../components/addHabit.svelte';
 
-	import { Sound } from 'svelte-sound';
 	import notificationSoundSrc from '$lib/assets/ding.mp3';
 
-	const notificationSound = new Sound(notificationSoundSrc);
+	const notificationSound = new Howl({ src: [notificationSoundSrc] });
 
 	export let data: { user?: User; quote: Quote };
 	let dayNumbers = Array.from({ length: 30 }, (_, i) => i + 1);

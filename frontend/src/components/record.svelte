@@ -1,12 +1,12 @@
 <script lang="ts">
 	import type { HabitRecord } from '../models';
-	import { Sound } from 'svelte-sound';
 	import { enhance } from '$app/forms';
+	import { Howl } from 'howler';
 
 	export let habitId: number;
 	export let date: string;
 	export let record: HabitRecord | undefined = undefined;
-	export let notificationSound: Sound;
+	export let notificationSound: Howl;
 
 	let form: HTMLFormElement;
 	const submitForm = () => {
