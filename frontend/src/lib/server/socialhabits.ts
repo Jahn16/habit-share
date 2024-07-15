@@ -1,9 +1,15 @@
 import { UserNotFoundError } from '$lib/errors/UserNotFoundError';
 import type { User, Habit, HabitRecord } from '../../models';
+import { env } from '$env/dynamic/private';
+
 export class SocialHabitsClient {
 	private url: string;
 	constructor() {
-		this.url = 'http://localhost:8000';
+		if (!env.BACKEND_URL) {
+			throw Error('You must set BACKEND_URL env variable');
+		}
+
+		this.url = env.BACKEND_URL;
 	}
 
 	async getUser(id: number): Promise<User> {
