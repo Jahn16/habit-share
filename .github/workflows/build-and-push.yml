@@ -10,9 +10,9 @@ jobs:
     strategy:
       matrix:
         docker:
-          - name: ytgpt-backend
+          - name: socialhabits-backend
             context: backend
-          - name: ytgpt-frontend
+          - name: socialhabits-frontend
             context: frontend
     steps:
       -
