@@ -55,5 +55,6 @@ export const { handle, signIn } = SvelteKitAuth({
 			}
 			return session;
 		}
-	}
+	},
+	trustHost: true
 });
