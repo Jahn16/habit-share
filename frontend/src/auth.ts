@@ -9,7 +9,9 @@ declare module '@auth/sveltekit' {
 }
 
 export const { handle, signIn } = SvelteKitAuth({
-	providers: [Auth0({ authorization: { params: { scope: 'openid profile offline_access' } } })],
+	providers: [
+		Auth0({ authorization: { params: { scope: 'openid profile email offline_access' } } })
+	],
 	callbacks: {
 		async jwt({ token, account }) {
 			if (account) {
