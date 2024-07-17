@@ -1,12 +1,13 @@
 <script lang="ts">
-	import { Button, Container, Form, FormGroup, Input, Table } from '@sveltestrap/sveltestrap';
-	import { Howl, Howler } from 'howler';
+	import { Button, Container, Form, FormGroup, Icon, Input, Table } from '@sveltestrap/sveltestrap';
+	import { Howl } from 'howler';
 
 	import type { Habit, HabitRecord, User, Quote } from '../../../models';
 	import Record from '../../../components/record.svelte';
 	import AddHabit from '../../../components/addHabit.svelte';
 
 	import notificationSoundSrc from '$lib/assets/ding.mp3';
+	import EditHabitModal from '../../../components/editHabitModal.svelte';
 
 	const notificationSound = new Howl({ src: [notificationSoundSrc] });
 
@@ -22,6 +23,7 @@
 	const getRecord = (habit: Habit, day: string): HabitRecord | undefined => {
 		return habit.records.find((r) => r.date.startsWith(day));
 	};
+	let editHabitModal: EditHabitModal;
 </script>
 
 {#if data.user}
@@ -40,6 +42,7 @@
 		<Table hover={true}>
 			<thead>
 				<tr>
+					<th scope="col"></th>
 					<th scope="col">#</th>
 					{#each dates as _, i}
 						<th scope="col">{i + 1}</th>
@@ -49,6 +52,14 @@
 			<tbody>
 				{#each data.user.habits as habit}
 					<tr>
+						<th scope="row"
+							><button
+								class="edit-habit text-secondary"
+								on:click={() => {
+									editHabitModal.editHabit(habit);
+								}}><Icon name="pencil-square" /></button
+							></th
+						>
 						<th scope="row">{habit.name}</th>
 						{#each dates as date}
 							<td>
@@ -65,6 +76,7 @@
 			</tbody>
 		</Table>
 		<AddHabit />
+		<EditHabitModal bind:this={editHabitModal} />
 	</Container>
 {:else}
 	<Container>
@@ -89,3 +101,12 @@
 		</Form>
 	</Container>
 {/if}
+
+<style>
+	.edit-habit {
+		all: unset;
+	}
+	.edit-habit:hover {
+		cursor: pointer;
+	}
+</style>
