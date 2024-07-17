@@ -9,7 +9,7 @@ export class SocialHabitsClient {
 			throw Error('You must set BACKEND_URL env variable');
 		}
 
-		this.url = env.BACKEND_URL;
+		this.url = 'http://localhost:8000';
 	}
 
 	async getUser(id: number): Promise<User> {
@@ -57,6 +57,19 @@ export class SocialHabitsClient {
 		});
 		if (!response.ok) {
 			throw Error(`Could not create habit ${habit.name}`);
+		}
+		const result = await response.json();
+		return result['value'];
+	}
+
+	async deleteHabit(ID: number, accessToken: string) {
+		const url = `${this.url}/habits/${ID}`;
+		const response = await fetch(url, {
+			method: 'DELETE',
+			headers: { Authorization: `Bearer ${accessToken}` }
+		});
+		if (!response.ok) {
+			throw Error(`Could not delete record ${ID}`);
 		}
 		const result = await response.json();
 		return result['value'];
