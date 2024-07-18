@@ -71,6 +71,17 @@ export const actions: Actions = {
 			session.accessToken
 		);
 	},
+	delete: async ({ request, locals }) => {
+		const session = await locals.auth();
+		if (!session) {
+			return;
+		}
+
+		const data = await request.formData();
+		const habitID = data.get('habit-id') as string;
+		const client = new SocialHabitsClient();
+		await client.deleteHabit(parseInt(habitID), session.accessToken);
+	},
 	record: async ({ request, locals }) => {
 		const session = await locals.auth();
 		if (!session) {
