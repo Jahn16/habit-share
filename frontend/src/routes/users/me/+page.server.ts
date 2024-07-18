@@ -71,6 +71,23 @@ export const actions: Actions = {
 			session.accessToken
 		);
 	},
+	update: async ({ request, locals }) => {
+		const session = await locals.auth();
+		if (!session) {
+			return;
+		}
+		const data = await request.formData();
+		const client = new SocialHabitsClient();
+		const habitID = data.get('habit-id') as string;
+		const habitName = data.get('habit-name') as string;
+		const habitGoal = data.get('habit-goal') as string;
+		console.log(habitID);
+		await client.updateHabit(
+			{ ID: parseInt(habitID), name: habitName, goal: parseInt(habitGoal), records: [] },
+			session.accessToken
+		);
+	},
+
 	delete: async ({ request, locals }) => {
 		const session = await locals.auth();
 		if (!session) {
