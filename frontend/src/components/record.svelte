@@ -33,7 +33,16 @@
 		<input type="checkbox" on:change={submitForm} />
 	</form>
 {:else}
-	<form method="post" action="?/undo" bind:this={form}>
+	<form
+		method="post"
+		action="?/undo"
+		bind:this={form}
+		use:enhance={() => {
+			return async ({ update }) => {
+				update({ reset: false });
+			};
+		}}
+	>
 		<input type="hidden" value={record.ID} name="record-id" />
 		<input type="checkbox" on:change={submitForm} checked />
 	</form>
