@@ -5,13 +5,14 @@
 	import type { Habit, HabitRecord, User, Quote } from '../../../models';
 	import Record from '../../../components/record.svelte';
 	import AddHabit from '../../../components/addHabit.svelte';
+	import quotes from '$lib/data/quotes.json';
 
 	import notificationSoundSrc from '$lib/assets/ding.mp3';
 	import EditHabitModal from '../../../components/editHabitModal.svelte';
 
 	const notificationSound = new Howl({ src: [notificationSoundSrc] });
 
-	export let data: { user?: User; quote: Quote };
+	export let data: { user?: User };
 
 	const daysInMonth = (): number => {
 		var now = new Date();
@@ -24,6 +25,7 @@
 		return habit.records.find((r) => r.date.startsWith(day));
 	};
 	let editHabitModal: EditHabitModal;
+	const quote = quotes[Math.floor(Math.random() * quotes.length)];
 </script>
 
 {#if data.user}
@@ -32,10 +34,8 @@
 			<h3>Welcome back, {data.user.name}</h3>
 			<br />
 			<blockquote cite="https://www.huxley.net/bnw/four.html">
-				<p>
-					{data.quote.quote}
-				</p>
-				<footer>— <cite>{data.quote.source}</cite></footer>
+				<p>{quote.quote}</p>
+				<footer>— <cite>{quote.source}</cite></footer>
 			</blockquote>
 		</Container>
 
