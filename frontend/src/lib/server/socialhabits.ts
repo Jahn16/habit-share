@@ -62,6 +62,20 @@ export class SocialHabitsClient {
 		return result['value'];
 	}
 
+	async updateHabit(habit: Habit, accessToken: string) {
+		const url = `${this.url}/habits/${habit.ID}`;
+		const response = await fetch(url, {
+			method: 'PATCH',
+			headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${accessToken}` },
+			body: JSON.stringify(habit)
+		});
+		if (!response.ok) {
+			throw Error(`Could not update habit ${habit.name}`);
+		}
+		const result = await response.json();
+		return result['value'];
+	}
+
 	async deleteHabit(ID: number, accessToken: string) {
 		const url = `${this.url}/habits/${ID}`;
 		const response = await fetch(url, {
