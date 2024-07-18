@@ -81,7 +81,6 @@ export const actions: Actions = {
 		const habitID = data.get('habit-id') as string;
 		const habitName = data.get('habit-name') as string;
 		const habitGoal = data.get('habit-goal') as string;
-		console.log(habitID);
 		await client.updateHabit(
 			{ ID: parseInt(habitID), name: habitName, goal: parseInt(habitGoal), records: [] },
 			session.accessToken
