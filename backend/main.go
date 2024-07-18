@@ -25,6 +25,8 @@ func main() {
 	app.Get("/habits/:id", handlers.HabitGet(db))
 	app.Post("/habits", authMiddleware, handlers.HabitCreate(db))
 	app.Delete("/habits/:id", authMiddleware, handlers.DeleteHabit(db))
+	app.Patch("/habits/:id", authMiddleware, handlers.UpdateHabit(db))
+
 	app.Post("/habits/:id/record", authMiddleware, handlers.RecordHabit(db))
 	app.Delete("/records/:id", authMiddleware, handlers.DeleteRecord(db))
 

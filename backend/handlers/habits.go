@@ -1,6 +1,8 @@
 package handlers
 
 import (
+	"fmt"
+
 	"github.com/Jahn16/socialhabits/models"
 	"github.com/gofiber/fiber/v2"
 	"gorm.io/gorm"
@@ -63,6 +65,33 @@ func DeleteHabit(db *gorm.DB) fiber.Handler {
 			return result.Error
 		}
 		db.Delete(&habit)
+		return c.JSON(fiber.Map{
+			"sucess": true,
+			"value":  habit,
+		})
+	}
+}
+
+func UpdateHabit(db *gorm.DB) fiber.Handler {
+	return func(c *fiber.Ctx) error {
+		email := c.Locals("email").(string)
+		var user models.User
+		db.Where(&models.User{Email: email}).First(&user)
+		habitID := c.Params("id")
+		fmt.Println(habitID)
+
+		var habit models.Habit
+		result := db.Where(&models.Habit{UserID: user.ID}).First(&habit, habitID)
+		if result.Error != nil {
+			return result.Error
+		}
+		updatedHabit := new(models.Habit)
+		if err := c.BodyParser(updatedHabit); err != nil {
+			return err
+		}
+		habit.Name = updatedHabit.Name
+		habit.Goal = updatedHabit.Goal
+		db.Save(&habit)
 		return c.JSON(fiber.Map{
 			"sucess": true,
 			"value":  habit,
