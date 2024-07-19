@@ -9,6 +9,7 @@
 
 	import notificationSoundSrc from '$lib/assets/ding.mp3';
 	import EditHabitModal from '../../../components/editHabitModal.svelte';
+	import FirstHabit from '../../../components/firstHabit.svelte';
 
 	const notificationSound = new Howl({ src: [notificationSoundSrc] });
 
@@ -80,29 +81,7 @@
 		<AddHabit />
 		<EditHabitModal bind:this={editHabitModal} />
 	</Container>
-{:else}
-	<Container>
-		<h4>
-			Hi, it seems like it's your first time here.<br /> Let's start by creating your first habit
-		</h4>
-		<br />
-		<Form method="post" action="?/setup">
-			<FormGroup>
-				<FormGroup floating label="Habit Name">
-					<Input name="habit-name" required />
-				</FormGroup>
-			</FormGroup>
-			<FormGroup floating label="Weekly Goal">
-				<Input type="select" name="habit-goal">
-					{#each [1, 2, 3, 4, 5, 6, 7] as option}
-						<option>{option}</option>
-					{/each}
-				</Input>
-			</FormGroup>
-			<Button children="Submit" color="primary" />
-		</Form>
-	</Container>
-{/if}
+{:else}<FirstHabit />{/if}
 
 <style>
 	.edit-habit {
