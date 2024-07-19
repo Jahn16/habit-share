@@ -6,6 +6,7 @@ export interface HabitRecord {
 
 export interface Habit {
 	ID?: number;
+	icon: string;
 	name: string;
 	goal: number;
 	records: HabitRecord[];
