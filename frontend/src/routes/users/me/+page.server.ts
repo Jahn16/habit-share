@@ -78,10 +78,18 @@ export const actions: Actions = {
 		const data = await request.formData();
 		const client = new SocialHabitsClient();
 		const habitID = data.get('habit-id') as string;
+
+		const habitIcon = data.get('habit-icon') as string;
 		const habitName = data.get('habit-name') as string;
 		const habitGoal = data.get('habit-goal') as string;
 		await client.updateHabit(
-			{ ID: parseInt(habitID), name: habitName, goal: parseInt(habitGoal), records: [] },
+			{
+				ID: parseInt(habitID),
+				icon: habitIcon,
+				name: habitName,
+				goal: parseInt(habitGoal),
+				records: []
+			},
 			session.accessToken
 		);
 	},
