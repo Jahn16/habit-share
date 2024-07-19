@@ -43,6 +43,7 @@
 			<thead>
 				<tr>
 					<th scope="col"></th>
+					<th scope="col"></th>
 					<th scope="col">#</th>
 					{#each dates as _, i}
 						<th scope="col">{i + 1}</th>
@@ -60,6 +61,7 @@
 								}}><Icon name="pencil-square" /></button
 							></th
 						>
+						<th scope="row">{habit.icon}</th>
 						<th scope="row">{habit.name}</th>
 						{#each dates as date}
 							<td>
