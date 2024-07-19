@@ -11,6 +11,7 @@
 	} from '@sveltestrap/sveltestrap';
 
 	import type { Habit } from '../models';
+	import EmojiPicker from './emojiPicker.svelte';
 	let open = false;
 	const toggle = () => (open = !open);
 	export function editHabit(selectedHabit: Habit): void {
@@ -21,12 +22,30 @@
 	let habit: Habit;
 	let updateForm: HTMLFormElement;
 	let deleteForm: HTMLFormElement;
+	let emojiPicker: EmojiPicker;
+	const onEmojiSelect = (emoji: string) => {
+		habit.icon = emoji;
+	};
 </script>
 
 {#if habit}
+	<EmojiPicker onSelect={onEmojiSelect} bind:this={emojiPicker} />
 	<Modal body header="Editing habit: {habit.name}" isOpen={open} {toggle}>
 		<form method="POST" action="?/update" bind:this={updateForm}>
 			<input type="hidden" name="habit-id" value={habit.ID} />
+			<div class="mb-3">
+				<label for="edit-habit-icon" class="form-label">Habit Icon</label>
+				<Input
+					type="text"
+					class="form-control"
+					id="edit-habit-icon"
+					name="habit-icon"
+					value={habit.icon}
+					on:click={() => emojiPicker.show()}
+					readonly
+				/>
+			</div>
+
 			<div class="mb-3">
 				<label for="edit-habit-name" class="form-label">Habit Name</label>
 				<Input
