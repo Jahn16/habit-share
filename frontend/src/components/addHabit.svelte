@@ -1,8 +1,18 @@
 <script lang="ts">
 	import { Button, Col, Container, Form, Icon, Input, Table } from '@sveltestrap/sveltestrap';
+	import EmojiPicker from './emojiPicker.svelte';
+
 	let addingHabit = false;
+	let emojiPicker: EmojiPicker;
+	let icon = '';
 </script>
 
+<EmojiPicker
+	bind:this={emojiPicker}
+	onSelect={(emoji) => {
+		icon = emoji;
+	}}
+/>
 <Container>
 	{#if addingHabit}
 		<Form method="post" action="?/add" class="row align-items-center">
@@ -14,6 +24,19 @@
 						addingHabit = false;
 					}}><Icon name="x-square" /></Button
 				></Col
+			>
+
+			<Col xs="1"
+				><Input
+					name="icon"
+					placeholder="☺"
+					id="icon"
+					on:click={() => {
+						emojiPicker.show();
+					}}
+					value={icon}
+					required
+				/></Col
 			>
 			<Col>
 				<Input name="name" placeholder="Habit Name" required />
@@ -36,3 +59,10 @@
 		>
 	{/if}
 </Container>
+
+<style>
+	:global(#icon) {
+		caret-color: transparent;
+		text-align: center;
+	}
+</style>
