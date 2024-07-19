@@ -89,6 +89,7 @@ func UpdateHabit(db *gorm.DB) fiber.Handler {
 		if err := c.BodyParser(updatedHabit); err != nil {
 			return err
 		}
+		habit.Icon = updatedHabit.Icon
 		habit.Name = updatedHabit.Name
 		habit.Goal = updatedHabit.Goal
 		db.Save(&habit)
