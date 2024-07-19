@@ -8,6 +8,7 @@ import (
 
 type Habit struct {
 	gorm.Model
+	Icon    string        `json:"icon"`
 	Name    string        `json:"name"`
 	Goal    int           `json:"goal"`
 	Records []HabitRecord `json:"records"`
