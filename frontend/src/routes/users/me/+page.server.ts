@@ -36,6 +36,7 @@ export const actions: Actions = {
 			error(403);
 		}
 		const data = await request.formData();
+		const habitIcon = data.get('habit-icon') as string;
 		const habitName = data.get('habit-name') as string;
 		const habitGoal = data.get('habit-goal') as string;
 
@@ -49,7 +50,7 @@ export const actions: Actions = {
 			})
 			.then(() => {
 				return client.addHabit(
-					{ name: habitName, goal: parseInt(habitGoal), records: [] },
+					{ icon: habitIcon, name: habitName, goal: parseInt(habitGoal), records: [] },
 					session.accessToken
 				);
 			});
