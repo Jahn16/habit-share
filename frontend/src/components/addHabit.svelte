@@ -42,8 +42,8 @@
 				<Input name="name" placeholder="Habit Name" required />
 			</Col>
 			<Col>
-				<Input type="select" name="goal">
-					<option disabled selected>Weekly Goal</option>
+				<Input type="select" name="goal" required>
+					<option value="" disabled selected>Weekly Goal</option>
 					{#each [1, 2, 3, 4, 5, 6, 7] as option}
 						<option>{option}</option>
 					{/each}
