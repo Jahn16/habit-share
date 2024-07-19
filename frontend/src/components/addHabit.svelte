@@ -21,6 +21,7 @@
 					type="button"
 					size="md"
 					on:click={() => {
+						icon = '';
 						addingHabit = false;
 					}}><Icon name="x-square" /></Button
 				></Col
