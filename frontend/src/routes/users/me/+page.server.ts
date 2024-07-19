@@ -61,10 +61,12 @@ export const actions: Actions = {
 		}
 		const data = await request.formData();
 		const client = new SocialHabitsClient();
+
+		const habitIcon = data.get('icon') as string;
 		const habitName = data.get('name') as string;
 		const habitGoal = data.get('goal') as string;
 		await client.addHabit(
-			{ name: habitName, goal: parseInt(habitGoal), records: [] },
+			{ icon: habitIcon, name: habitName, goal: parseInt(habitGoal), records: [] },
 			session.accessToken
 		);
 	},
