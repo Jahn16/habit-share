@@ -3,13 +3,17 @@
 		Button,
 		Nav,
 		NavItem,
-		NavLink,
 		Navbar,
 		NavbarBrand,
-		Image
+		Image,
+		Dropdown,
+		DropdownToggle,
+		DropdownMenu,
+		DropdownItem,
+		Icon
 	} from '@sveltestrap/sveltestrap';
 	import { page } from '$app/stores';
-	import { signIn } from '@auth/sveltekit/client';
+	import { signIn, signOut } from '@auth/sveltekit/client';
 </script>
 
 <Navbar color="dark" theme="dark" class="mb-5">
@@ -27,15 +31,27 @@
 			</NavItem>
 		{:else}
 			<NavItem>
-				<NavLink href="/users/me">
-					<Image
-						thumbnail
-						src={$page.data.session?.user?.image ?? 'https://source.boringavatars.com/marble/120/'}
-						alt="User Avatar"
-						class="img-circle"
-						style="max-width: 48px;max-height: 48px;"
-					/>
-				</NavLink>
+				<Dropdown>
+					<DropdownToggle style="all: unset;">
+						<Image
+							thumbnail
+							src={$page.data.session?.user?.image ??
+								'https://source.boringavatars.com/marble/120/'}
+							alt="User Avatar"
+							class="img-circle"
+							style="max-width: 48px;max-height: 48px;"
+						/>
+					</DropdownToggle>
+					<DropdownMenu>
+						<DropdownItem divider />
+						<DropdownItem
+							class="text-danger"
+							on:click={() => {
+								signOut();
+							}}>Signout <Icon name="box-arrow-right" /></DropdownItem
+						>
+					</DropdownMenu>
+				</Dropdown>
 			</NavItem>
 		{/if}
 	</Nav>
