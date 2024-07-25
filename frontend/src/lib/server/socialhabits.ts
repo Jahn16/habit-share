@@ -48,6 +48,20 @@ export class SocialHabitsClient {
 		return result['value'];
 	}
 
+	async updateUser(user: { name: string; colorPalette: string }, accessToken: string) {
+		const url = `${this.url}/users/me`;
+		const response = await fetch(url, {
+			method: 'PATCH',
+			headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${accessToken}` },
+			body: JSON.stringify(user)
+		});
+		if (!response.ok) {
+			throw Error(`Could not update user ${user.name} ${await response.text()}`);
+		}
+		const result = await response.json();
+		return result['value'];
+	}
+
 	async addHabit(habit: Habit, accessToken: string) {
 		const url = `${this.url}/habits`;
 		const response = await fetch(url, {
