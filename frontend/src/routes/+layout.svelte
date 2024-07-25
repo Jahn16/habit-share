@@ -14,6 +14,7 @@
 	} from '@sveltestrap/sveltestrap';
 	import { page } from '$app/stores';
 	import { signIn, signOut } from '@auth/sveltekit/client';
+	import { goto } from '$app/navigation';
 </script>
 
 <Navbar color="dark" theme="dark" class="mb-5">
@@ -43,6 +44,16 @@
 						/>
 					</DropdownToggle>
 					<DropdownMenu>
+						<DropdownItem
+							on:click={async () => {
+								await goto('/users/me');
+							}}>Home <Icon name="house" /></DropdownItem
+						>
+						<DropdownItem
+							on:click={async () => {
+								await goto('/preferences');
+							}}>Preferences <Icon name="gear" /></DropdownItem
+						>
 						<DropdownItem divider />
 						<DropdownItem
 							class="text-danger"
