@@ -12,7 +12,7 @@ type Habit struct {
 	Name    string        `json:"name"`
 	Goal    int           `json:"goal"`
 	Records []HabitRecord `json:"records"`
-	UserID  uint          `json:"userID"`
+	UserID  string        `json:"userID"`
 }
 
 type HabitRecord struct {
