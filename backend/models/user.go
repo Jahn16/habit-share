@@ -2,12 +2,9 @@ package models
 
 import (
 	"time"
-
-	"gorm.io/gorm"
 )
 
 type User struct {
-	gorm.Model
 	ID        string    `json:"string"`
 	Name      string    `json:"name"`
 	Picture   string    `json:"picture"`
