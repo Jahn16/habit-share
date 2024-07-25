@@ -31,7 +31,8 @@
 
 	let colors: string[] = [];
 	if (data.user) {
-		colors = palette(data.user.colorPalette, 9);
+		const habitQty = data.user.habits.length;
+		colors = palette(data.user.colorPalette, habitQty < 9 ? 9 : habitQty);
 		colors.reverse();
 	}
 </script>
