@@ -12,6 +12,7 @@
 	import palette from 'google-palette';
 	import rawPalettes from '$lib/data/palettes.json';
 	import type { User } from '../../models';
+	import { enhance } from '$app/forms';
 
 	const palettes: { [key: string]: string[] } = rawPalettes;
 	const paletteKinds = Object.keys(palettes);
@@ -38,7 +39,15 @@
 </script>
 
 <Container class="w-50">
-	<Form action="?/update" method="POST">
+	<form
+		action="?/update"
+		method="POST"
+		use:enhance={() => {
+			return async ({ update }) => {
+				update({ reset: false });
+			};
+		}}
+	>
 		<legend>User</legend>
 		<FormGroup>
 			<Label>Name</Label>
@@ -67,7 +76,7 @@
 			{/each}
 		</Row>
 		<Button type="submit" color="primary" class="mt-3">Submit</Button>
-	</Form>
+	</form>
 </Container>
 
 <style>
