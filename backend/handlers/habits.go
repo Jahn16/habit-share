@@ -1,8 +1,6 @@
 package handlers
 
 import (
-	"fmt"
-
 	"github.com/Jahn16/socialhabits/models"
 	"github.com/gofiber/fiber/v2"
 	"gorm.io/gorm"
