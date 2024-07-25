@@ -20,6 +20,7 @@ func extractToken(header string) (string, error) {
 }
 
 type CustomClaims struct {
+	Sub      string `json:"sub"`
 	Email    string `json:"email"`
 	Nickname string `json:"nickname"`
 	Picture  string `json:"picture"`
@@ -66,6 +67,7 @@ func New(config Config) fiber.Handler {
 			return c.Status(fiber.StatusUnauthorized).SendString("Invalid custom token")
 		}
 
+		c.Locals("id", customClaims.Sub)
 		c.Locals("email", customClaims.Email)
 		c.Locals("username", customClaims.Nickname)
 		c.Locals("picture", customClaims.Picture)
