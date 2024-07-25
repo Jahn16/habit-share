@@ -5,6 +5,7 @@
 		Container,
 		Form,
 		FormGroup,
+		Icon,
 		Input,
 		Label,
 		Row
@@ -75,7 +76,9 @@
 				<Col class="color-square" style="width: 1em;height:1em;background-color: #{color};"></Col>
 			{/each}
 		</Row>
-		<Button type="submit" color="primary" class="mt-3">Submit</Button>
+		<Button type="submit" color="primary" class="mt-3 float-end"
+			><Icon name="check-square" /></Button
+		>
 	</form>
 </Container>
 

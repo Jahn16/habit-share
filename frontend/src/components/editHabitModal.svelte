@@ -90,7 +90,7 @@
 							on:click={() => {
 								toggle();
 								updateForm.requestSubmit();
-							}}><Icon name="save2" /></Button
+							}}><Icon name="check-square" /></Button
 						>
 					</Col>
 				</Row>
