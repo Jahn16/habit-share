@@ -10,12 +10,25 @@
 		Row
 	} from '@sveltestrap/sveltestrap';
 	import palette from 'google-palette';
-	import palettes from '$lib/data/palettes.json';
+	import rawPalettes from '$lib/data/palettes.json';
+	import type { User } from '../../models';
 
+	const palettes: { [key: string]: string[] } = rawPalettes;
 	const paletteKinds = Object.keys(palettes);
-	let paletteKind = 'sequential';
 	let colors: string[];
-	let paletteName = 'cb-Blues';
+
+	export let data: { user: User };
+
+	const getPaletteKind = (paletteName: string): string => {
+		for (const pk of paletteKinds) {
+			if (palettes[pk].includes(paletteName)) {
+				return pk;
+			}
+		}
+		return 'N/A';
+	};
+	let paletteName = data.user.colorPalette || 'cb-Blues';
+	let paletteKind = getPaletteKind(paletteName);
 
 	const updateColors = () => {
 		colors = palette(paletteName, 9, 0) || [];
@@ -25,11 +38,11 @@
 </script>
 
 <Container class="w-50">
-	<Form>
+	<Form action="?/update" method="POST">
 		<legend>User</legend>
 		<FormGroup>
 			<Label>Name</Label>
-			<Input name="username" />
+			<Input name="username" value={data.user.name} />
 		</FormGroup>
 		<legend>Palette</legend>
 		<FormGroup>
@@ -42,7 +55,7 @@
 		</FormGroup>
 		<FormGroup>
 			<Label for="color-pallete">Palette</Label>
-			<Input type="select" id="color-pallete" bind:value={paletteName} on:change={updateColors}>
+			<Input type="select" name="color-palette" bind:value={paletteName} on:change={updateColors}>
 				{#each palettes[paletteKind] as p}
 					<option>{p}</option>
 				{/each}
