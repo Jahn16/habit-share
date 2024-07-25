@@ -12,12 +12,10 @@ func RecordHabit(db *gorm.DB) fiber.Handler {
 		if err := c.BodyParser(habitRecord); err != nil {
 			return err
 		}
-		email := c.Locals("email").(string)
-		var user models.User
-		db.Where(&models.User{Email: email}).First(&user)
-		var habit models.Habit
+		userID := c.Locals("id").(string)
 		habitID := c.Params("id")
-		result := db.Where(&models.Habit{UserID: user.ID}).First(&habit, habitID)
+		var habit models.Habit
+		result := db.Where(&models.Habit{UserID: userID}).First(&habit, habitID)
 		if result.Error != nil {
 			return result.Error
 		}
@@ -39,11 +37,9 @@ func DeleteRecord(db *gorm.DB) fiber.Handler {
 			return recordResult.Error
 		}
 
-		email := c.Locals("email").(string)
-		var user models.User
-		db.Where(&models.User{Email: email}).First(&user)
+		userID := c.Locals("id").(string)
 		var habit models.Habit
-		habitResult := db.Where(&models.Habit{UserID: user.ID}).First(&habit, record.HabitID)
+		habitResult := db.Where(&models.Habit{UserID: userID}).First(&habit, record.HabitID)
 		if habitResult.Error != nil {
 			return habitResult.Error
 		}

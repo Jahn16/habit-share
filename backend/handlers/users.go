@@ -8,9 +8,9 @@ import (
 
 func GetAuthenticatedUser(db *gorm.DB) fiber.Handler {
 	return func(c *fiber.Ctx) error {
-		email := c.Locals("email").(string)
+		userID := c.Locals("id").(string)
 		var user models.User
-		result := db.Where(&models.User{Email: email}).Preload("Habits.Records").First(&user)
+		result := db.Preload("Habits.Records").First(&user, "id = ?", userID)
 		if result.Error != nil {
 			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"sucess": "false", "message": "User not found"})
 		}
@@ -23,10 +23,12 @@ func GetAuthenticatedUser(db *gorm.DB) fiber.Handler {
 
 func UserCreate(db *gorm.DB) fiber.Handler {
 	return func(c *fiber.Ctx) error {
+		userID := c.Locals("id").(string)
 		username := c.Locals("username").(string)
 		email := c.Locals("email").(string)
 		picture := c.Locals("picture").(string)
 		user := models.User{
+			ID:      userID,
 			Name:    username,
 			Email:   email,
 			Picture: picture,
@@ -42,8 +44,9 @@ func UserCreate(db *gorm.DB) fiber.Handler {
 
 func UserGet(db *gorm.DB) fiber.Handler {
 	return func(c *fiber.Ctx) error {
+		userID := c.Locals("id").(string)
 		var user models.User
-		result := db.Preload("Habits.Records").First(&user, c.Params("id"))
+		result := db.Preload("Habits.Records").First(&user, "id = ?", userID)
 		if result.Error != nil {
 			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"sucess": "false", "message": "User not found"})
 		}

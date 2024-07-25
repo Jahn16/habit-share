@@ -22,9 +22,9 @@ func HabitList(db *gorm.DB) fiber.Handler {
 
 func HabitCreate(db *gorm.DB) fiber.Handler {
 	return func(c *fiber.Ctx) error {
-		email := c.Locals("email").(string)
+		userID := c.Locals("id").(string)
 		var user models.User
-		result := db.Where(&models.User{Email: email}).First(&user)
+		result := db.First(&user, "id = ?", userID)
 		if result.Error != nil {
 			return result.Error
 		}
@@ -55,12 +55,10 @@ func HabitGet(db *gorm.DB) fiber.Handler {
 
 func DeleteHabit(db *gorm.DB) fiber.Handler {
 	return func(c *fiber.Ctx) error {
-		email := c.Locals("email").(string)
-		var user models.User
-		db.Where(&models.User{Email: email}).First(&user)
+		userID := c.Locals("id").(string)
 		habitID := c.Params("id")
 		var habit models.Habit
-		result := db.Where(&models.Habit{UserID: user.ID}).First(&habit, habitID)
+		result := db.Where(&models.Habit{UserID: userID}).First(&habit, habitID)
 		if result.Error != nil {
 			return result.Error
 		}
@@ -74,14 +72,10 @@ func DeleteHabit(db *gorm.DB) fiber.Handler {
 
 func UpdateHabit(db *gorm.DB) fiber.Handler {
 	return func(c *fiber.Ctx) error {
-		email := c.Locals("email").(string)
-		var user models.User
-		db.Where(&models.User{Email: email}).First(&user)
+		userID := c.Locals("id").(string)
 		habitID := c.Params("id")
-		fmt.Println(habitID)
-
 		var habit models.Habit
-		result := db.Where(&models.Habit{UserID: user.ID}).First(&habit, habitID)
+		result := db.Where(&models.Habit{UserID: userID}).First(&habit, habitID)
 		if result.Error != nil {
 			return result.Error
 		}
