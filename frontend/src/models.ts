@@ -15,6 +15,7 @@ export interface Habit {
 export interface User {
 	name: string;
 	picture: string;
+	colorPalette?: string;
 	habits: Habit[];
 }
 
