@@ -30,7 +30,6 @@ func UserCreate(db *gorm.DB) fiber.Handler {
 		user := models.User{
 			ID:      userID,
 			Name:    username,
-			Email:   email,
 			Picture: picture,
 		}
 		db.Create(&user)
