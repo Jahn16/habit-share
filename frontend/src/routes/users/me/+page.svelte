@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Button, Container, Form, FormGroup, Icon, Input, Table } from '@sveltestrap/sveltestrap';
 	import { Howl } from 'howler';
+	import palette from 'google-palette';
 
 	import type { Habit, HabitRecord, User, Quote } from '../../../models';
 	import Record from '../../../components/record.svelte';
@@ -27,6 +28,12 @@
 	};
 	let editHabitModal: EditHabitModal;
 	const quote = quotes[Math.floor(Math.random() * quotes.length)];
+
+	let colors: string[] = [];
+	if (data.user) {
+		colors = palette(data.user.colorPalette, 9);
+		colors.reverse();
+	}
 </script>
 
 {#if data.user}
@@ -52,7 +59,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				{#each data.user.habits as habit}
+				{#each data.user.habits as habit, i}
 					<tr>
 						<th scope="row"
 							><button
@@ -71,6 +78,7 @@
 									habitId={habit.ID ? habit.ID : -1}
 									{date}
 									{notificationSound}
+									color={'#' + colors[i]}
 								/>
 							</td>
 						{/each}
