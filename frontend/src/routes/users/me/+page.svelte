@@ -32,7 +32,7 @@
 	let colors: string[] = [];
 	if (data.user) {
 		const habitQty = data.user.habits.length;
-		const colorPalette = habitQty <= 9 ? data.user.colorPalette : 'tol';
+		const colorPalette = habitQty <= 9 ? data.user.colorPalette || 'cb-Blues' : 'tol';
 		const colorQty = habitQty < 9 ? 9 : habitQty;
 		colors = palette(colorPalette, colorQty);
 		colors.reverse();
