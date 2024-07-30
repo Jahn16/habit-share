@@ -11,11 +11,13 @@ import (
 	"github.com/Jahn16/socialhabits/middlewares/auth0"
 	"github.com/gofiber/fiber/v2"
 
+	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/joho/godotenv"
 )
 
 func main() {
 	app := fiber.New()
+	app.Use(logger.New())
 
 	godotenv.Load()
 	db, _ := database.New(os.Getenv("DB_DSN"))
