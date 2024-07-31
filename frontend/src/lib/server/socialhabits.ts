@@ -13,7 +13,7 @@ export class SocialHabitsClient {
 		this.url = env.BACKEND_URL;
 	}
 
-	async getUser(id: number): Promise<User> {
+	async getUser(id: string): Promise<User> {
 		const url = `${this.url}/users/${id}`;
 		const response = await fetch(url);
 		if (!response.ok) {
