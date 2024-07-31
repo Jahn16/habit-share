@@ -10,7 +10,7 @@ export class SocialHabitsClient {
 			throw Error('You must set BACKEND_URL env variable');
 		}
 
-		this.url = env.BACKEND_URL;
+		this.url = 'http://localhost:8000';
 	}
 
 	async getUser(id: string): Promise<User> {
@@ -33,9 +33,9 @@ export class SocialHabitsClient {
 				logger.log({ level: 'info', message: 'Current user not found' });
 				throw new UserNotFoundError();
 			}
-			logger.log({ level: 'info', message: 'Retrieved current user data' });
 			throw Error('Could not get User');
 		}
+		logger.log({ level: 'info', message: 'Retrieved current user data' });
 		const result = await response.json();
 		return result['value'];
 	}
