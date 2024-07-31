@@ -1,5 +1,15 @@
 <script lang="ts">
-	import { Button, Container, Form, FormGroup, Icon, Input, Table } from '@sveltestrap/sveltestrap';
+	import {
+		Button,
+		Col,
+		Container,
+		Form,
+		FormGroup,
+		Icon,
+		Input,
+		Row,
+		Table
+	} from '@sveltestrap/sveltestrap';
 	import { Howl } from 'howler';
 	import palette from 'google-palette';
 
@@ -11,6 +21,7 @@
 	import notificationSoundSrc from '$lib/assets/ding.mp3';
 	import EditHabitModal from '../../../components/editHabitModal.svelte';
 	import FirstHabit from '../../../components/firstHabit.svelte';
+	import Share from '../../../components/share.svelte';
 
 	const notificationSound = new Howl({ src: [notificationSoundSrc] });
 
@@ -80,7 +91,14 @@
 				{/each}
 			</tbody>
 		</Table>
-		<AddHabit />
+		<Row class="justify-content-between">
+			<Col xs="auto">
+				<AddHabit />
+			</Col>
+			<Col xs="auto">
+				<Share userID={data.user.id} />
+			</Col>
+		</Row>
 		<EditHabitModal bind:this={editHabitModal} />
 	</Container>
 {:else}<FirstHabit />{/if}
