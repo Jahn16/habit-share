@@ -36,6 +36,7 @@
 		"@sveltestrap/sveltestrap": "^6.2.7",
 		"emoji-picker-element": "^1.21.3",
 		"google-palette": "^1.1.1",
-		"howler": "^2.2.4"
+		"howler": "^2.2.4",
+		"winston": "^3.13.1"
 	}
 }

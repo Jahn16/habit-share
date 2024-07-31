@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Container, Table } from '@sveltestrap/sveltestrap';
+	import { Container, Table, Image, Row, Col } from '@sveltestrap/sveltestrap';
 	import palette from 'google-palette';
 
 	import type { Habit, HabitRecord, User } from '../../../models';
@@ -28,6 +28,16 @@
 </script>
 
 <Container>
+	<Container class="mb-3"
+		><Row class="justify-content-center mb-2">
+			<Col xs="auto">
+				<Image src={data.user.picture} />
+			</Col>
+		</Row>
+		<Row class="justify-content-center"
+			><Col xs="auto"><h3 class="mt-2">{data.user.name}</h3></Col></Row
+		>
+	</Container>
 	<Table hover={true}>
 		<thead>
 			<tr>
