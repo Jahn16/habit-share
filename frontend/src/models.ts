@@ -13,6 +13,7 @@ export interface Habit {
 }
 
 export interface User {
+	ID?: string;
 	name: string;
 	picture: string;
 	colorPalette?: string;
