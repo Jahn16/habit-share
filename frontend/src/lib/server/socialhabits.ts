@@ -1,6 +1,7 @@
 import { UserNotFoundError } from '$lib/errors/UserNotFoundError';
 import type { User, Habit, HabitRecord } from '../../models';
 import { env } from '$env/dynamic/private';
+import { logger } from '$lib/logger';
 
 export class SocialHabitsClient {
 	private url: string;
@@ -16,8 +17,10 @@ export class SocialHabitsClient {
 		const url = `${this.url}/users/${id}`;
 		const response = await fetch(url);
 		if (!response.ok) {
+			logger.log({ level: 'info', message: 'User not found', id: id });
 			throw new UserNotFoundError(id);
 		}
+		logger.log({ level: 'info', message: 'Retrieved user data', id: id });
 		const result = await response.json();
 		return result['value'];
 	}
@@ -27,8 +30,10 @@ export class SocialHabitsClient {
 		const response = await fetch(url, { headers: { Authorization: `Bearer ${accessToken}` } });
 		if (!response.ok) {
 			if (response.status == 404) {
+				logger.log({ level: 'info', message: 'Current user not found' });
 				throw new UserNotFoundError();
 			}
+			logger.log({ level: 'info', message: 'Retrieved current user data' });
 			throw Error('Could not get User');
 		}
 		const result = await response.json();
@@ -42,8 +47,10 @@ export class SocialHabitsClient {
 			headers: { Authorization: `Bearer ${accessToken}` }
 		});
 		if (!response.ok) {
+			logger.log({ level: 'error', message: 'Could not create user' });
 			throw Error('Could create user');
 		}
+		logger.log({ level: 'info', message: 'Created user' });
 		const result = await response.json();
 		return result['value'];
 	}
@@ -56,8 +63,10 @@ export class SocialHabitsClient {
 			body: JSON.stringify(user)
 		});
 		if (!response.ok) {
+			logger.error({ level: 'error', message: 'Could not update user' });
 			throw Error(`Could not update user ${user.name} ${await response.text()}`);
 		}
+		logger.log({ level: 'info', message: 'Updated user' });
 		const result = await response.json();
 		return result['value'];
 	}
@@ -70,8 +79,10 @@ export class SocialHabitsClient {
 			body: JSON.stringify(habit)
 		});
 		if (!response.ok) {
+			logger.error({ level: 'error', message: 'Could not create habit' });
 			throw Error(`Could not create habit ${habit.name}`);
 		}
+		logger.info({ level: 'info', message: 'Created habit' });
 		const result = await response.json();
 		return result['value'];
 	}
@@ -84,8 +95,10 @@ export class SocialHabitsClient {
 			body: JSON.stringify(habit)
 		});
 		if (!response.ok) {
+			logger.error({ level: 'error', message: 'Could not update habit', habitID: habit.ID });
 			throw Error(`Could not update habit ${habit.name}`);
 		}
+		logger.info({ level: 'info', message: 'Updated habit', habitID: habit.ID });
 		const result = await response.json();
 		return result['value'];
 	}
@@ -97,8 +110,10 @@ export class SocialHabitsClient {
 			headers: { Authorization: `Bearer ${accessToken}` }
 		});
 		if (!response.ok) {
+			logger.error({ level: 'error', message: 'Could not delete habit', habitID: ID });
 			throw Error(`Could not delete record ${ID}`);
 		}
+		logger.info({ level: 'info', message: 'Deleted habit', habitID: ID });
 		const result = await response.json();
 		return result['value'];
 	}
@@ -112,8 +127,14 @@ export class SocialHabitsClient {
 			body: JSON.stringify(data)
 		});
 		if (!response.ok) {
+			logger.error({
+				level: 'error',
+				message: 'Could not add habit register',
+				habitID: record.habitID
+			});
 			throw Error('Could not record habit');
 		}
+		logger.info({ level: 'info', message: 'Could not add habit record', habitID: record.habitID });
 		const result = await response.json();
 		return result['value'];
 	}
@@ -125,8 +146,11 @@ export class SocialHabitsClient {
 			headers: { Authorization: `Bearer ${accessToken}` }
 		});
 		if (!response.ok) {
+			logger.error({ level: 'error', message: 'Could not delete record', recordID: ID });
 			throw Error(`Could not delete record ${ID}`);
 		}
+
+		logger.error({ level: 'info', message: 'Deleted record', recordID: ID });
 		const result = await response.json();
 		return result['value'];
 	}
