@@ -10,7 +10,7 @@ export class SocialHabitsClient {
 			throw Error('You must set BACKEND_URL env variable');
 		}
 
-		this.url = 'http://localhost:8000';
+		this.url = env.BACKEND_URL;
 	}
 
 	async getUser(id: string): Promise<User> {
