@@ -1,4 +1,4 @@
-import { error, type Actions } from '@sveltejs/kit';
+import { error, type Actions, redirect } from '@sveltejs/kit';
 import { SocialHabitsClient } from '$lib/server/socialhabits';
 import type { PageServerLoad } from './$types';
 import type { User } from '@auth/sveltekit';
@@ -46,5 +46,6 @@ export const actions: Actions = {
 			},
 			session.accessToken
 		);
+		throw redirect(303, '/users/me');
 	}
 };
