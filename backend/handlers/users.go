@@ -66,7 +66,7 @@ func UserUpdate(db *gorm.DB) fiber.Handler {
 
 func UserGet(db *gorm.DB) fiber.Handler {
 	return func(c *fiber.Ctx) error {
-		userID := c.Locals("id").(string)
+		userID := c.Params("id")
 		var user models.User
 		result := db.Preload("Habits.Records").First(&user, "id = ?", userID)
 		if result.Error != nil {
