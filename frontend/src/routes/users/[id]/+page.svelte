@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Container, Table, Image, Row, Col } from '@sveltestrap/sveltestrap';
+	import { Container, Table, Image, Row, Col, Icon, Button } from '@sveltestrap/sveltestrap';
 	import palette from 'google-palette';
 
 	import type { Habit, HabitRecord, User } from '../../../models';
@@ -25,8 +25,12 @@
 		colors = palette(colorPalette, colorQty);
 		colors.reverse();
 	}
+	let addFriendForm: HTMLFormElement;
 </script>
 
+<form action="?/add" method="POST" bind:this={addFriendForm}>
+	<input type="hidden" name="friend-id" value={data.user.id} />
+</form>
 <Container>
 	<Container class="mb-3"
 		><Row class="justify-content-center mb-2">
@@ -34,9 +38,21 @@
 				<Image src={data.user.picture} />
 			</Col>
 		</Row>
-		<Row class="justify-content-center"
-			><Col xs="auto"><h3 class="mt-2">{data.user.name}</h3></Col></Row
-		>
+		<Row class="justify-content-center">
+			<Col xs="auto">
+				<h3 class="mt-2">{data.user.name}</h3>
+			</Col>
+		</Row>
+		<Row class="justify-content-center">
+			<Col xs="auto">
+				<Button
+					color="light"
+					on:click={() => {
+						addFriendForm.submit();
+					}}><Icon name="person-fill-add" /></Button
+				>
+			</Col>
+		</Row>
 	</Container>
 	<Table hover={true}>
 		<thead>

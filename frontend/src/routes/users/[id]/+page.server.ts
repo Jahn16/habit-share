@@ -2,7 +2,7 @@ import { UserNotFoundError } from '$lib/errors/UserNotFoundError';
 import { SocialHabitsClient } from '$lib/server/socialhabits';
 import type { User } from '../../../models';
 import type { PageServerLoad } from './$types';
-import { error } from '@sveltejs/kit';
+import { error, type Actions } from '@sveltejs/kit';
 
 export const load: PageServerLoad = async ({ params }) => {
 	const client = new SocialHabitsClient();
@@ -22,4 +22,18 @@ export const load: PageServerLoad = async ({ params }) => {
 	return {
 		user: user
 	};
+};
+
+export const actions: Actions = {
+	add: async ({ request, locals }) => {
+		const session = await locals.auth();
+		if (!session) {
+			return;
+		}
+		const data = await request.formData();
+		const client = new SocialHabitsClient();
+
+		const friendID = data.get('friend-id') as string;
+		await client.addFriend(friendID, session.accessToken);
+	}
 };
