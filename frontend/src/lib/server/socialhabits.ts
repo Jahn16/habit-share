@@ -71,6 +71,22 @@ export class SocialHabitsClient {
 		return result['value'];
 	}
 
+	async addFriend(friendID: string, accessToken: string): Promise<User> {
+		const url = `${this.url}/users/me/friends`;
+		const response = await fetch(url, {
+			method: 'POST',
+			headers: { Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
+			body: JSON.stringify({ friendID: friendID })
+		});
+		if (!response.ok) {
+			logger.log({ level: 'error', message: 'Could not add friend' });
+			throw Error('Could not add friend');
+		}
+		logger.log({ level: 'info', message: 'Added friend' });
+		const result = await response.json();
+		return result['value'];
+	}
+
 	async addHabit(habit: Habit, accessToken: string) {
 		const url = `${this.url}/habits`;
 		const response = await fetch(url, {
