@@ -96,7 +96,7 @@
 				<AddHabit />
 			</Col>
 			<Col xs="auto">
-				<Share userID={data.user.id} />
+				<Share userID={data.user.slug} />
 			</Col>
 		</Row>
 		<EditHabitModal bind:this={editHabitModal} />
