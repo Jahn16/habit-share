@@ -46,7 +46,8 @@
 		<Row class="justify-content-center">
 			<Col xs="auto">
 				<Button
-					color="light"
+					color="primary"
+					outline
 					on:click={() => {
 						addFriendForm.submit();
 					}}><Icon name="person-fill-add" /></Button
