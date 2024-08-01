@@ -10,7 +10,7 @@ func GetAuthenticatedUser(db *gorm.DB) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		userID := c.Locals("id").(string)
 		var user models.User
-		result := db.Preload("Habits.Records").First(&user, "id = ?", userID)
+		result := db.Preload("Friends").Preload("Habits.Records").First(&user, "id = ?", userID)
 		if result.Error != nil {
 			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"sucess": "false", "message": "User not found"})
 		}
@@ -69,7 +69,7 @@ func UserGet(db *gorm.DB) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		userID := c.Params("id")
 		var user models.User
-		result := db.Preload("Habits.Records").First(&user, "id = ?", userID)
+		result := db.Preload("Friends").Preload("Habits.Records").First(&user, "id = ?", userID)
 		if result.Error != nil {
 			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"sucess": "false", "message": "User not found"})
 		}
@@ -96,7 +96,7 @@ func AddFriend(db *gorm.DB) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		userID := c.Locals("id").(string)
 		var user models.User
-		result := db.First(&user, "id = ?", userID)
+		result := db.Preload("Friends").First(&user, "id = ?", userID)
 		if result.Error != nil {
 			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"sucess": "false", "message": "User not found"})
 		}
@@ -115,10 +115,9 @@ func AddFriend(db *gorm.DB) fiber.Handler {
 			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"sucess": "false", "message": "Friend not found"})
 		}
 
-		user.Friends = append(user.Friends, friend)
-		updateResult := db.Save(&user)
-		if updateResult.Error != nil {
-			return updateResult.Error
+		err := db.Model(&user).Association("Friends").Append(&friend)
+		if err != nil {
+			return c.Status(500).JSON(fiber.Map{"success": "false", "message": "error"})
 		}
 		return c.JSON(fiber.Map{
 			"success": true,
