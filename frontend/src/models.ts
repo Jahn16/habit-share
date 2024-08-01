@@ -14,6 +14,7 @@ export interface Habit {
 
 export interface User {
 	id?: string;
+	slug?: string;
 	name: string;
 	picture: string;
 	colorPalette?: string;
