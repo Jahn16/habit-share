@@ -37,6 +37,7 @@ func main() {
 
 	app.Get("/users/me", authMiddleware, handlers.GetAuthenticatedUser(db))
 	app.Patch("/users/me", authMiddleware, handlers.UserUpdate(db))
+	app.Post("/users/me/friends", authMiddleware, handlers.AddFriend(db))
 	app.Get("/users/:id", handlers.UserGet(db))
 
 	log.Fatal(app.Listen(":8000"))

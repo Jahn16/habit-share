@@ -39,6 +39,7 @@ func UserCreate(db *gorm.DB) fiber.Handler {
 
 	}
 }
+
 func UserUpdate(db *gorm.DB) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		userID := c.Locals("id").(string)
@@ -88,5 +89,40 @@ func UserList(db *gorm.DB) fiber.Handler {
 			"value":   users,
 		})
 
+	}
+}
+
+func AddFriend(db *gorm.DB) fiber.Handler {
+	return func(c *fiber.Ctx) error {
+		userID := c.Locals("id").(string)
+		var user models.User
+		result := db.First(&user, "id = ?", userID)
+		if result.Error != nil {
+			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"sucess": "false", "message": "User not found"})
+		}
+
+		data := new(
+			struct {
+				FriendID string `json:"friendID"`
+			})
+		if err := c.BodyParser(data); err != nil {
+			return err
+		}
+
+		var friend models.User
+		friendQuery := db.First(&friend, "id = ?", data.FriendID)
+		if friendQuery.Error != nil {
+			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"sucess": "false", "message": "Friend not found"})
+		}
+
+		user.Friends = append(user.Friends, friend)
+		updateResult := db.Save(&user)
+		if updateResult.Error != nil {
+			return updateResult.Error
+		}
+		return c.JSON(fiber.Map{
+			"success": true,
+			"value":   user,
+		})
 	}
 }
