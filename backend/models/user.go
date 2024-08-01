@@ -12,5 +12,5 @@ type User struct {
 	Habits       []Habit   `json:"habits"`
 	CreatedAt    time.Time `json:"createdAt"`
 	UpdatedAt    time.Time `json:"updatedAt"`
-	Friends      []User    `gorm:"foreignkey:ID" json:"friends"`
+	Friends      *[]User   `gorm:"many2many:user_friends" json:"friends"`
 }
