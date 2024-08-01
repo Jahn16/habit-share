@@ -96,28 +96,29 @@ func AddFriend(db *gorm.DB) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		userID := c.Locals("id").(string)
 		var user models.User
-		result := db.Preload("Friends").First(&user, "id = ?", userID)
-		if result.Error != nil {
+		if result := db.Preload("Friends").First(&user, "id = ?", userID); result.Error != nil {
 			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"sucess": "false", "message": "User not found"})
 		}
 
 		data := new(
 			struct {
 				FriendID string `json:"friendID"`
-			})
+			},
+		)
 		if err := c.BodyParser(data); err != nil {
 			return err
 		}
+		if user.ID == data.FriendID {
+			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"sucess": "false", "message": "Cant add yourself as a friend"})
+		}
 
 		var friend models.User
-		friendQuery := db.First(&friend, "id = ?", data.FriendID)
-		if friendQuery.Error != nil {
+		if result := db.First(&friend, "id = ?", data.FriendID); result.Error != nil {
 			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"sucess": "false", "message": "Friend not found"})
 		}
 
-		err := db.Model(&user).Association("Friends").Append(&friend)
-		if err != nil {
-			return c.Status(500).JSON(fiber.Map{"success": "false", "message": "error"})
+		if err := db.Model(&user).Association("Friends").Append(&friend); err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"success": "false", "message": "error"})
 		}
 		return c.JSON(fiber.Map{
 			"success": true,
