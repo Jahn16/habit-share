@@ -7,6 +7,7 @@ import (
 type User struct {
 	ID           string    `json:"id"`
 	Name         string    `json:"name"`
+	Slug         string    `json:"slug"`
 	Picture      string    `json:"picture"`
 	ColorPalette *string   `json:"colorPalette"`
 	Habits       []Habit   `json:"habits"`
