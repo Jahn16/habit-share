@@ -22,6 +22,7 @@ func extractToken(header string) (string, error) {
 type CustomClaims struct {
 	Sub      string `json:"sub"`
 	Nickname string `json:"nickname"`
+	Name     string `json:"name"`
 	Picture  string `json:"picture"`
 }
 
@@ -67,6 +68,7 @@ func New(config Config) fiber.Handler {
 		}
 
 		c.Locals("id", customClaims.Sub)
+		c.Locals("name", customClaims.Name)
 		c.Locals("username", customClaims.Nickname)
 		c.Locals("picture", customClaims.Picture)
 
