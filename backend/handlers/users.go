@@ -3,6 +3,7 @@ package handlers
 import (
 	"github.com/Jahn16/socialhabits/models"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gosimple/slug"
 	"gorm.io/gorm"
 )
 
@@ -26,9 +27,12 @@ func UserCreate(db *gorm.DB) fiber.Handler {
 		userID := c.Locals("id").(string)
 		username := c.Locals("username").(string)
 		picture := c.Locals("picture").(string)
+		name := c.Locals("name").(string)
+		userSlug := slug.Make(name)
 		user := models.User{
 			ID:      userID,
 			Name:    username,
+			Slug:    userSlug,
 			Picture: picture,
 		}
 		db.Create(&user)
@@ -67,9 +71,9 @@ func UserUpdate(db *gorm.DB) fiber.Handler {
 
 func UserGet(db *gorm.DB) fiber.Handler {
 	return func(c *fiber.Ctx) error {
-		userID := c.Params("id")
+		userSlug := c.Params("slug")
 		var user models.User
-		result := db.Preload("Friends").Preload("Habits.Records").First(&user, "id = ?", userID)
+		result := db.Where("slug = ?", userSlug).Preload("Friends").Preload("Habits.Records").First(&user)
 		if result.Error != nil {
 			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"sucess": "false", "message": "User not found"})
 		}
