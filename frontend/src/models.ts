@@ -13,11 +13,12 @@ export interface Habit {
 }
 
 export interface User {
-	ID?: string;
+	id?: string;
 	name: string;
 	picture: string;
 	colorPalette?: string;
 	habits: Habit[];
+	friends: User[];
 }
 
 export interface Quote {
