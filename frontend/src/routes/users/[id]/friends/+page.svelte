@@ -1,33 +1,30 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import { Container, Icon } from '@sveltestrap/sveltestrap';
 	import type { User } from '../../../../models';
+	import FriendCard from '../../../../components/friendCard.svelte';
 
 	export let data: { user: User };
+	const isCurrentUser = $page.params.id === 'me';
+	let form: HTMLFormElement;
+	let friendInput: HTMLInputElement;
+	let onRemove: ((friend: User) => void) | undefined;
+	if (isCurrentUser) {
+		onRemove = (f) => {
+			friendInput.value = f.id || '';
+			form.submit();
+		};
+	}
 </script>
 
-<Container class="w-50">
+<form action="?/remove" method="POST" bind:this={form}>
+	<input type="hidden" name="friend-id" bind:this={friendInput} />
+</form>
+
+<Container style="max-width: 40%;">
 	<h3 class="text-center mb-4">Friends <Icon name="people" /></h3>
 	{#each data.user.friends as friend}
-		<div class="card mb-3">
-			<div class="row g-0">
-				<div class="col-md-auto">
-					<img src={friend.picture} class="img-fluid rounded-start" alt="..." />
-				</div>
-				<div class="col-md-auto">
-					<div class="card-body">
-						<h5 class="card-title">
-							<a href="/users/{friend.slug}" class="friend-url">
-								{friend.name}
-								<Icon name="box-arrow-up-right" class="text-primary" />
-							</a>
-						</h5>
-						<p class="card-text">
-							<small class="text-body-secondary"><Icon name="people-fill" /> 3</small>
-						</p>
-					</div>
-				</div>
-			</div>
-		</div>
+		<FriendCard {friend} {onRemove} />
 	{/each}
 </Container>
 

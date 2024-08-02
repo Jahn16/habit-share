@@ -19,7 +19,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 		}
 	} catch (e: unknown) {
 		if (e instanceof UserNotFoundError) {
-			return { user: null };
+			error(404, { message: e.message });
 		}
 		if (e instanceof Error) {
 			error(500, { message: e.message });
@@ -30,4 +30,20 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 	return {
 		user: user
 	};
+};
+export const actions: Actions = {
+	remove: async ({ request, locals }) => {
+		const session = await locals.auth();
+		if (!session) {
+			return;
+		}
+		const data = await request.formData();
+		const client = new SocialHabitsClient();
+
+		const friendID = data.get('friend-id') as string;
+		console.log(`FriendID: ${friendID}`);
+		try {
+			await client.removeFriend(friendID, session.accessToken);
+		} catch {}
+	}
 };
