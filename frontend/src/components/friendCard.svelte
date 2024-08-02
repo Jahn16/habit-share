@@ -33,9 +33,7 @@
 		<div class="col-md-auto">
 			<div class="card-body">
 				<h5 class="card-title">
-					<a href="/users/{friend.slug}" class="friend-url">
-						{friend.name}
-					</a>
+					{friend.name}
 				</h5>
 				<p class="card-text">
 					<small class="text-body-secondary"><Icon name="people-fill" /> </small>
