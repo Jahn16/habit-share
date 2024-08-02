@@ -87,6 +87,21 @@ export class SocialHabitsClient {
 		return result['value'];
 	}
 
+	async removeFriend(friendID: string, accessToken: string): Promise<User> {
+		const url = `${this.url}/users/me/friends?friendID=${friendID}`;
+		const response = await fetch(url, {
+			method: 'DELETE',
+			headers: { Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json' }
+		});
+		if (!response.ok) {
+			logger.log({ level: 'error', message: 'Could not remove friend' });
+			throw Error('Could not remove friend');
+		}
+		logger.log({ level: 'info', message: 'Removed friend' });
+		const result = await response.json();
+		return result['value'];
+	}
+
 	async addHabit(habit: Habit, accessToken: string) {
 		const url = `${this.url}/habits`;
 		const response = await fetch(url, {
