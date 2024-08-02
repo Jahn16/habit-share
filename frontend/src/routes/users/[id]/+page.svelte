@@ -3,6 +3,8 @@
 	import palette from 'google-palette';
 
 	import type { Habit, HabitRecord, User } from '../../../models';
+	import { redirect } from '@sveltejs/kit';
+	import { goto } from '$app/navigation';
 
 	export let data: { user: User };
 
@@ -44,14 +46,31 @@
 			</Col>
 		</Row>
 		<Row class="justify-content-center">
-			<Col xs="auto">
+			<Col xs="auto" class="px-1">
 				<Button
-					color="primary"
-					outline
+					color="light"
 					on:click={() => {
 						addFriendForm.submit();
-					}}><Icon name="person-fill-add" /></Button
+					}}
+					><Icon name="person-fill-add" />
+				</Button>
+			</Col>
+			<Col xs="auto" class="px-1">
+				<Button
+					color="light"
+					class="position-relative"
+					on:click={() => {
+						goto(`${data.user.slug}/friends`);
+					}}
 				>
+					<Icon name="people-fill" />
+					<span
+						class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-info"
+					>
+						{data.user.friends.length}
+						<span class="visually-hidden">unread messages</span>
+					</span>
+				</Button>
 			</Col>
 		</Row>
 	</Container>
