@@ -130,3 +130,27 @@ func AddFriend(db *gorm.DB) fiber.Handler {
 		})
 	}
 }
+
+func RemoveFriend(db *gorm.DB) fiber.Handler {
+	return func(c *fiber.Ctx) error {
+		userID := c.Locals("id").(string)
+		var user models.User
+		if result := db.Preload("Friends").First(&user, "id = ?", userID); result.Error != nil {
+			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"sucess": "false", "message": "User not found"})
+		}
+
+		friendID := c.Query("friendID")
+		var friend models.User
+		if result := db.First(&friend, "id = ?", friendID); result.Error != nil {
+			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"sucess": "false", "message": "Friend not found"})
+		}
+
+		if err := db.Model(&user).Association("Friends").Delete(&friend); err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"success": "false", "message": "Could not remove friend"})
+		}
+		return c.JSON(fiber.Map{
+			"success": true,
+			"value":   user,
+		})
+	}
+}
