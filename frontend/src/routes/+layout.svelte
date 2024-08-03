@@ -51,6 +51,12 @@
 						>
 						<DropdownItem
 							on:click={async () => {
+								await goto('/users/me/friends');
+							}}>Friends <Icon name="people" /></DropdownItem
+						>
+
+						<DropdownItem
+							on:click={async () => {
 								await goto('/preferences');
 							}}>Preferences <Icon name="gear" /></DropdownItem
 						>
