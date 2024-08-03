@@ -42,8 +42,6 @@ export const actions: Actions = {
 
 		const friendID = data.get('friend-id') as string;
 		console.log(`FriendID: ${friendID}`);
-		try {
-			await client.removeFriend(friendID, session.accessToken);
-		} catch {}
+		await client.removeFriend(friendID, session.accessToken);
 	}
 };
