@@ -2,7 +2,7 @@ import { UserNotFoundError } from '$lib/errors/UserNotFoundError';
 import { SocialHabitsClient } from '$lib/server/socialhabits';
 import type { User } from '../../../models';
 import type { PageServerLoad } from './$types';
-import { error, type Actions } from '@sveltejs/kit';
+import { error, redirect, type Actions } from '@sveltejs/kit';
 
 export const load: PageServerLoad = async ({ params, locals }) => {
 	const client = new SocialHabitsClient();
@@ -30,6 +30,10 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 		loggedUser = await client.getMe(session.accessToken);
 	} catch {
 		loggedUser = null;
+	}
+
+	if (user.id === loggedUser?.id) {
+		redirect(307, '/users/me');
 	}
 	return {
 		user: user,
