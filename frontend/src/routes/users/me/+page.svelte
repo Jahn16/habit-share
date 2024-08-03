@@ -1,17 +1,6 @@
 <script lang="ts">
-	import {
-		Button,
-		Col,
-		Container,
-		Form,
-		FormGroup,
-		Icon,
-		Input,
-		Row,
-		Table
-	} from '@sveltestrap/sveltestrap';
+	import { Col, Container, Icon, Row, Table } from '@sveltestrap/sveltestrap';
 	import { Howl } from 'howler';
-	import palette from 'google-palette';
 
 	import type { Habit, HabitRecord, User, Quote } from '../../../models';
 	import Record from '../../../components/record.svelte';
@@ -22,6 +11,7 @@
 	import EditHabitModal from '../../../components/editHabitModal.svelte';
 	import FirstHabit from '../../../components/firstHabit.svelte';
 	import Share from '../../../components/share.svelte';
+	import { getColors } from '$lib/utils/colors';
 
 	const notificationSound = new Howl({ src: [notificationSoundSrc] });
 
@@ -41,11 +31,7 @@
 
 	let colors: string[] = [];
 	if (data.user) {
-		const habitQty = data.user.habits.length;
-		const colorPalette = habitQty <= 9 ? data.user.colorPalette || 'cb-Blues' : 'tol';
-		const colorQty = habitQty < 9 ? 9 : habitQty;
-		colors = palette(colorPalette, colorQty);
-		colors.reverse();
+		colors = getColors(data.user.colorPalette, data.user.habits.length);
 	}
 </script>
 

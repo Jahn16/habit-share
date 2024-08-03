@@ -1,9 +1,8 @@
 <script lang="ts">
 	import { Container, Table, Image, Row, Col, Icon, Button } from '@sveltestrap/sveltestrap';
-	import palette from 'google-palette';
 
 	import type { Habit, HabitRecord, User } from '../../../models';
-	import { redirect } from '@sveltejs/kit';
+	import { getColors } from '$lib/utils/colors';
 	import { goto } from '$app/navigation';
 
 	export let data: { user: User; loggedUser: User | null };
@@ -19,15 +18,7 @@
 		return habit.records.find((r) => r.date.startsWith(day));
 	};
 
-	let colors: string[] = [];
-	if (data.user) {
-		const habitQty = data.user.habits.length;
-		const colorPalette = habitQty <= 9 ? data.user.colorPalette || 'cb-Blues' : 'tol';
-		const colorQty = habitQty < 9 ? 9 : habitQty;
-		colors = palette(colorPalette, colorQty);
-		colors.reverse();
-	}
-
+	let colors: string[] = getColors(data.user.colorPalette, data.user.habits.length);
 	const checkIsFriend = (): boolean => {
 		if (!data.loggedUser) {
 			return false;
