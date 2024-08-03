@@ -6,7 +6,7 @@
 	import { redirect } from '@sveltejs/kit';
 	import { goto } from '$app/navigation';
 
-	export let data: { user: User };
+	export let data: { user: User; loggedUser: User | null };
 
 	const daysInMonth = (): number => {
 		var now = new Date();
@@ -27,10 +27,20 @@
 		colors = palette(colorPalette, colorQty);
 		colors.reverse();
 	}
-	let addFriendForm: HTMLFormElement;
+
+	const checkIsFriend = (): boolean => {
+		if (!data.loggedUser) {
+			return false;
+		}
+		const friendIDs = data.loggedUser.friends.map(({ id }) => id);
+		return friendIDs.includes(data.user.id);
+	};
+	const isFriend = checkIsFriend();
+	let friendForm: HTMLFormElement;
+	const formAction = isFriend ? '?/remove' : '?/add';
 </script>
 
-<form action="?/add" method="POST" bind:this={addFriendForm}>
+<form action={formAction} method="POST" bind:this={friendForm}>
 	<input type="hidden" name="friend-id" value={data.user.id} />
 </form>
 <Container>
@@ -47,14 +57,27 @@
 		</Row>
 		<Row class="justify-content-center">
 			<Col xs="auto" class="px-1">
-				<Button
-					color="light"
-					on:click={() => {
-						addFriendForm.submit();
-					}}
-					><Icon name="person-fill-add" />
-				</Button>
+				{#if !isFriend}
+					<Button
+						color="light"
+						on:click={() => {
+							friendForm.submit();
+						}}
+					>
+						<Icon name="person-fill-add" />
+					</Button>
+				{:else}
+					<Button
+						color="light"
+						on:click={() => {
+							friendForm.submit();
+						}}
+					>
+						<Icon name="person-fill-slash" />
+					</Button>
+				{/if}
 			</Col>
+
 			<Col xs="auto" class="px-1">
 				<Button
 					color="light"
